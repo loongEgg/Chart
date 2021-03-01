@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace LoongEgg.Chart
+﻿namespace LoongEgg.Chart
 {
     /// <summary>
     /// 坐标轴元素接口
@@ -12,9 +10,9 @@ namespace LoongEgg.Chart
         /// </summary>
         double Gap { get; set; }
         /// <summary>
-        /// 坐标轴元素的方向
+        /// 坐标元素的布局位置
         /// </summary>
-        Orientation Orientation { get; }
+        Placements Placement { get; }
         /// <summary>
         /// 投影算法
         /// </summary>

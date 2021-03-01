@@ -13,6 +13,7 @@
     <Grid>
         <c:Chart>
             <c:GridLines />
+            <c:AxisLines Placement="Bottom" />
         </c:Chart>
     </Grid>
 </Window>
