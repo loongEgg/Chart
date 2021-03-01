@@ -76,11 +76,8 @@
   <ItemGroup>
     <Compile Include="contracts\IChart.cs" />
     <Compile Include="contracts\IChartElement.cs" />
-    <Compile Include="base\HorizontalLineElements.cs" />
-    <Compile Include="base\HorizontalChartElements.cs" />
-    <Compile Include="chartelements\HorizontalGridLines.cs" />
     <Compile Include="enums\HorizontalPlacement.cs" />
-    <Compile Include="GridLines.cs" />
+    <Compile Include="gridlines\GridLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,8 +102,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="axiselements\" />
+    <Folder Include="chartelements\" />
     <Folder Include="figures\" />
-    <Folder Include="gridlines\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -108,7 +108,7 @@ namespace LoongEgg.Chart
                 nameof(IsHorizontalMajorTickVisible),
                 typeof(bool),
                 typeof(GridLines),
-                new PropertyMetadata(default(bool), OnParameterChanged));
+                new PropertyMetadata(true, OnParameterChanged));
 
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace LoongEgg.Chart
                 nameof(IsHorizontalMinorTickVisible),
                 typeof(bool),
                 typeof(GridLines),
-                new PropertyMetadata(default(bool), OnParameterChanged));
+                new PropertyMetadata(true, OnParameterChanged));
 
         /// <summary>
         /// 
@@ -147,7 +147,7 @@ namespace LoongEgg.Chart
                 nameof(IsVerticalMajorTickVisible),
                 typeof(bool),
                 typeof(GridLines),
-                new PropertyMetadata(default(bool), OnParameterChanged));
+                new PropertyMetadata(true, OnParameterChanged));
 
         /// <summary>
         /// 
@@ -166,7 +166,7 @@ namespace LoongEgg.Chart
                 nameof(IsVerticalMinorTickVisible),
                 typeof(bool),
                 typeof(GridLines),
-                new PropertyMetadata(default(bool), OnParameterChanged));
+                new PropertyMetadata(true, OnParameterChanged));
 
         #endregion
 
