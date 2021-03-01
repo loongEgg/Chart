@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LoongEgg.Core</name>
+    </assembly>
+    <members>
+        <member name="T:LoongEgg.Core.BindableObject">
+            <summary>
+            可绑定对象的基类
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Core.BindableObject.SetProperty``1(``0@,``0,System.String)">
+            <summary>
+            尝试设置"新"的数值, 如果跟旧的值不一样会调用<see cref="M:LoongEgg.Core.BindableObject.RaisePropertyChanged(System.String)"/>
+            </summary>
+            <typeparam name="T">属性的类型(自动判断)</typeparam>
+            <param name="target">待设置的属性</param>
+            <param name="value">待赋予的"新"值</param>
+            <param name="propertyName">属性名称(自动获取)</param>
+            <returns>true: 已设置为新值; false: 未设置.</returns>
+        </member>
+        <member name="M:LoongEgg.Core.BindableObject.RaisePropertyChanged(System.String)">
+            <summary>
+            引发<see cref="E:LoongEgg.Core.BindableObject.PropertyChanged"/>
+            </summary>
+            <param name="propertyName">要引发属性改变事件的属性的名称</param>
+        </member>
+        <member name="E:LoongEgg.Core.BindableObject.PropertyChanged">
+            <summary>
+            属性改变事件, 外部想知道属性改变了, 就使用"+="新增一个观察点, 
+            并根据<see cref="P:System.ComponentModel.PropertyChangedEventArgs.PropertyName"/>判断是哪个属性
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Core.Container">
+            <summary>
+            Container for object instances
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Core.Container.Instances">
+            <summary>
+            线程安全的<seealso cref="T:System.Collections.Generic.Dictionary`2"/>
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Core.Container.AddOrUpdate``1(``0)">
+            <summary>
+            Add or update the specify instance
+            </summary>
+            <typeparam name="T">type of instance</typeparam>
+            <param name="instance">instance to add or update</param>
+        </member>
+        <member name="M:LoongEgg.Core.Container.Get``1">
+            <summary>
+            获取指定类型的实例
+            </summary>
+            <typeparam name="T">type of instance to get</typeparam>
+            <returns>Instance of specify type</returns>
+        </member>
+        <member name="T:LoongEgg.Core.DelegateCommand">
+            <summary>
+            不需要外部参数输入的<see cref="T:LoongEgg.Core.DelegateCommand`1"/>
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Core.DelegateCommand.#ctor(System.Action)">
+            <summary>
+            Instance of <see cref="T:LoongEgg.Core.DelegateCommand"/>
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Core.DelegateCommand.#ctor(System.Action,System.Func{System.Boolean})">
+            <summary>
+            Instance of <see cref="T:LoongEgg.Core.DelegateCommand"/>
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Core.DelegateCommand`1">
+            <summary>
+            需要手动引发<see cref="E:LoongEgg.Core.DelegateCommand`1.CanExecuteChanged"/>的命令
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:LoongEgg.Core.DelegateCommand`1._ExcuteMethod">
+            <summary>
+            负责执行命令的方法
+            </summary>
+        </member>
+        <member name="F:LoongEgg.Core.DelegateCommand`1._PredicateMethod">
+            <summary>
+            负责判断命令是否可以执行的方向
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Core.DelegateCommand`1.IsExecuting">
+            <summary>
+            命令正在执行的标志
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Core.DelegateCommand`1.#ctor(System.Action{`0})">
+            <summary>
+            Instance of <see cref="T:LoongEgg.Core.DelegateCommand`1"/>
+            </summary>
+            <param name="executeMethod"><see cref="F:LoongEgg.Core.DelegateCommand`1._ExcuteMethod"/></param>
+        </member>
+        <member name="M:LoongEgg.Core.DelegateCommand`1.#ctor(System.Action{`0},System.Predicate{`0})">
+            <summary>
+            Instance of <see cref="T:LoongEgg.Core.DelegateCommand`1"/>
+            </summary>
+            <param name="executeMethod"><see cref="F:LoongEgg.Core.DelegateCommand`1._PredicateMethod"/></param>
+        </member>
+        <member name="M:LoongEgg.Core.DelegateCommand`1.RaiseCanExecuteChanged">
+            <summary>
+            手动引发<see cref="E:LoongEgg.Core.DelegateCommand`1.CanExecuteChanged"/>
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Core.IoC">
+            <summary>
+            依赖注入工具类
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Core.IoC.Container">
+            <summary>
+            实例容器
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LoongEgg.Data</name>
+    </assembly>
+    <members>
+        <member name="T:LoongEgg.Data.DataSeries">
+            <summary>
+            数据序列
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.DataSeries.Name">
+            <summary>
+            Name of this DataSeries
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.DataSeries.Xrange">
+            <summary>
+            横坐标范围
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.DataSeries.Yrange">
+            <summary>
+            纵坐标范围
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.DataSeries.GroupId">
+            <summary>
+            分组编号
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Data.DataSeries.Reset(System.Collections.Generic.IEnumerable{LoongEgg.Data.Point})">
+            <summary>
+            重置为指定的集合
+            </summary>
+            <param name="points"></param>
+        </member>
+        <member name="T:LoongEgg.Data.DataSeriesCollection">
+            <summary>
+            数据系列的集合
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Data.Point">
+            <summary>
+            数据点
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Data.Range">
+            <summary>
+            数据范围定义
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Data.Range.#ctor">
+            <summary>
+            专门加一个无参构造函数, 方便xaml中初始化
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Data.Range.Parse(System.String)">
+            <summary>
+            将字符串转换成<seealso cref="T:LoongEgg.Data.Range"/>实例
+            </summary>
+            <param name="txt">"from, to"</param>
+            <returns><seealso cref="T:LoongEgg.Data.Range"/>实例</returns>
+        </member>
+        <member name="T:LoongEgg.Data.RangeConverter">
+            <summary>
+            Converter for <see cref="T:LoongEgg.Data.Range"/>
+            </summary>
+        </member>
+    </members>
+</doc>
