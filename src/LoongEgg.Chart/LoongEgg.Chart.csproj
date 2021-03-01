@@ -57,11 +57,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="base\ChartElement.bak" />
     <Compile Include="base\ChartElement.cs" />
+    <Compile Include="base\ChartLines.cs" />
     <Compile Include="charts\Chart.cs" />
     <Compile Include="contracts\IAxisElement.cs" />
     <Compile Include="contracts\IAxisMarker.cs" />
     <Compile Include="contracts\IAxisTicks.cs" />
+    <Compile Include="contracts\IChartLines.cs" />
     <Compile Include="contracts\IGridLines.cs" />
     <Compile Include="enums\TickLevels.cs" />
     <Page Include="Themes\Generic.xaml">
@@ -77,6 +80,7 @@
     <Compile Include="base\HorizontalChartElements.cs" />
     <Compile Include="chartelements\HorizontalGridLines.cs" />
     <Compile Include="enums\HorizontalPlacement.cs" />
+    <Compile Include="GridLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

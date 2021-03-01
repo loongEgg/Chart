@@ -1,8 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace LoongEgg.Chart
 {
-
     interface IChartElement
     {
         /// <summary>
@@ -44,5 +44,6 @@ namespace LoongEgg.Chart
         /// 当父级容器被设置时
         /// </summary> 
         void OnContainerSet();
+
     }
 }

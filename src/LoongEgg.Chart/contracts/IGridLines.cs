@@ -40,5 +40,8 @@ namespace LoongEgg.Chart
         /// 垂直次刻度可见?
         /// </summary>
         bool IsVerticalMinorTickVisible { get; set; }
+
+        ValueToScreen HorizontalValueToScreen { get; }
+        ValueToScreen VerticalValueToScreen { get; }
     }
 }
