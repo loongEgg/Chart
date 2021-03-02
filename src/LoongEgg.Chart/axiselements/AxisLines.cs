@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LoongEgg.Log;
 
 namespace LoongEgg.Chart
 {
@@ -71,8 +73,8 @@ namespace LoongEgg.Chart
                 typeof(double),
                 typeof(AxisTicks),
                 new PropertyMetadata(
-                    0d, 
-                    (s,e)=>
+                    0d,
+                    (s, e) =>
                     {
                         var self = s as AxisLines;
                         if (self == null) return;
@@ -91,13 +93,16 @@ namespace LoongEgg.Chart
 
             binding = new Binding(nameof(StrokeThickness)) { Source = this };
             Lines.SetBinding(Path.StrokeThicknessProperty, binding);
+
         }
 
         public override void Update()
         {
+            if (InternalChange == true) return;
             if (Root == null) return;
             Root.Children.Clear();
             if (RenderSize.Height == 0 && RenderSize.Width == 0) return;
+            Logger.Dbug($"AxisLines[{this.GetHashCode()}] update x {++UpdateCount}");
             GeometryGroup group = new GeometryGroup();
             ValueToScreen valueToScreen = ValueToScreen;
 
@@ -150,17 +155,29 @@ namespace LoongEgg.Chart
 
             Lines.Data = group;
             Root.Children.Add(Lines);
+
+            if (Placement == Placements.Top)
+                Canvas.SetBottom(Lines, Gap);
+            else if (Placement == Placements.Bottom)
+                Canvas.SetTop(Lines, Gap);
         }
 
+        public override void OnContainerSet()
+        {
+            base.OnContainerSet();
+            OnLengthSet();
+        }
         public void OnLengthSet()
         {
-            if(Placement == Placements.Top || Placement == Placements.Bottom)
+            if (Placement == Placements.Top || Placement == Placements.Bottom)
             {
+                Width = Double.NaN;
                 Height = Length;
             }
             else
             {
                 Width = Length;
+                Height = Double.NaN;
             }
         }
     }

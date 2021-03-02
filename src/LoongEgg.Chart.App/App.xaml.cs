@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using LoongEgg.Log;
 
 namespace LoongEgg.Chart.App
 {
@@ -13,5 +14,12 @@ namespace LoongEgg.Chart.App
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            Logger.Enable(Loggers.Debug);
+            this.MainWindow = new MainWindow();
+            this.MainWindow.Show();
+        }
     }
 }

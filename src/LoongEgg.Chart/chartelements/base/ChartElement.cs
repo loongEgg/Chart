@@ -1,10 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using LoongEgg.Log;
 
 namespace LoongEgg.Chart
 {
-    public abstract class ChartElement : ContentControl, IChartElement
+    public abstract class ChartElement : ContentControl, IChartElement, ICountOnUpdate
     {
+        public int UpdateCount { get; protected set; } = 0;
         public Panel Root { get; internal set; } = new Canvas();
 
         public IChart Container
@@ -19,14 +21,23 @@ namespace LoongEgg.Chart
         }
         private IChart _Container;
 
-        public bool InternalChange { get; set; } = false;
+        public bool InternalChange { get; set; } = true;
 
         public ChartElement()
         {
             Content = Root;
             OnInitializing();
-            SizeChanged += (s, e) => Update();
-            Loaded += (s, e) => Update();
+            SizeChanged += (s, e) =>
+            {
+                Logger.Dbug($"{ this.GetType() }[{ this.GetHashCode() }] size changed");
+                Update();
+            };
+            Loaded += (s, e) =>
+            {
+                InternalChange = false;
+                Logger.Dbug($"{ this.GetType() }[{ this.GetHashCode() }] loaded");
+                Update();
+            };
         }
 
         public abstract void OnContainerSet();

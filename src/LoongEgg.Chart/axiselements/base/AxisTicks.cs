@@ -49,7 +49,15 @@ namespace LoongEgg.Chart
                 nameof(TickLevel),
                 typeof(TickLevels),
                 typeof(AxisTicks),
-                new PropertyMetadata(default(TickLevels), (s, e) => (s as AxisTicks)?.ResetTickSource()));
+                new PropertyMetadata(
+                    default(TickLevels), 
+                    (s, e) =>
+                    {
+                        var self = s as AxisTicks;
+                        if (self == null) return;
+                        self.ResetTickSource();
+                        self.Update();
+                    }));
 
         public void ResetTickSource()
         {

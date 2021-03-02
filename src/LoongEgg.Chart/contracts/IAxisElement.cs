@@ -17,10 +17,6 @@
         /// 投影算法
         /// </summary>
         ValueToScreen ValueToScreen { get; }
-
-        /// <summary>
-        /// 根据<see cref="Gap"/>设置Margin
-        /// </summary>
-        void ResetMargin();
+         
     }
 }

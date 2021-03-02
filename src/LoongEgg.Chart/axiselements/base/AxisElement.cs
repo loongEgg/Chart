@@ -24,7 +24,7 @@ namespace LoongEgg.Chart
                 nameof(Gap),
                 typeof(double),
                 typeof(AxisElement),
-                new PropertyMetadata(default(double), (s, e) => (s as AxisElement)?.ResetMargin()));
+                new PropertyMetadata(default(double), (s, e) => (s as AxisElement)?.Update()));
                
         /// <summary>
         /// 
@@ -50,7 +50,8 @@ namespace LoongEgg.Chart
                         var self = s as AxisElement;
                         if (self == null) return;
                         self.ResetPlacement();
-                        self.ResetMargin();
+                        (self as AxisTicks)?.ResetTickSource();
+                        (self as AxisLines)?.OnLengthSet();
                         self.Update();
                     }));
 
@@ -87,29 +88,6 @@ namespace LoongEgg.Chart
                 Container.PART_Bottom?.Children.Add(this);
             }
         }
-
-        public void ResetMargin()
-        {
-            if (Placement == Placements.Left)
-            {
-                HorizontalAlignment = HorizontalAlignment.Right;
-                Margin = new Thickness(0, 0, Gap, 0);
-            }
-            else if (Placement == Placements.Top)
-            {
-                VerticalAlignment = VerticalAlignment.Bottom;
-                Margin = new Thickness(0, 0, 0, Gap);
-            }
-            else if (Placement == Placements.Right)
-            {
-                HorizontalAlignment = HorizontalAlignment.Left;
-                Margin = new Thickness(Gap, 0, 0, 0);
-            }
-            else if (Placement == Placements.Bottom)
-            {
-                VerticalAlignment = VerticalAlignment.Top;
-                Margin = new Thickness( 0, Gap, 0, 0);
-            }
-        }
+ 
     }
 }

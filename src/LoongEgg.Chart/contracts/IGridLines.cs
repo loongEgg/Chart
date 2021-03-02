@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace LoongEgg.Chart
 {
     interface IGridLines
     {
+        Brush Stroke { get; set; }
+        double StrokeThickness { get; set; }
+
         /// <summary>
         /// 水平主刻度线集合
         /// </summary>

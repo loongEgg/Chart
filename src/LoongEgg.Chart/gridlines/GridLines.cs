@@ -6,12 +6,52 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using LoongEgg.Log;
 
 namespace LoongEgg.Chart
 {
-    public class GridLines : ChartLines, IGridLines
+    public class GridLines : ChartElement, IGridLines
     {
         #region dependency properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Description("")]
+        public Brush Stroke
+        {
+            get { return (Brush)GetValue(StrokeProperty); }
+            set { SetValue(StrokeProperty, value); }
+        }
+        /// <summary>
+        /// dependency property of <see ref="Stroke"/>
+        /// </summary>
+        public static readonly DependencyProperty StrokeProperty =
+            DependencyProperty.Register(
+                nameof(Stroke),
+                typeof(Brush),
+                typeof(GridLines),
+                new PropertyMetadata(Brushes.Green, OnParameterChanged));
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Description("")]
+        public double StrokeThickness
+        {
+            get { return (double)GetValue(StrokeThicknessProperty); }
+            set { SetValue(StrokeThicknessProperty, value); }
+        }
+        /// <summary>
+        /// dependency property of <see ref="StrokeThickness"/>
+        /// </summary>
+        public static readonly DependencyProperty StrokeThicknessProperty =
+            DependencyProperty.Register(
+                nameof(StrokeThickness),
+                typeof(double),
+                typeof(GridLines),
+                new PropertyMetadata(0.5, OnParameterChanged));
 
         /// <summary>
         /// 
@@ -197,7 +237,7 @@ namespace LoongEgg.Chart
 
             ResetPlacement();
         }
-         
+
         public override void ResetPlacement()
         {
             if (Container == null || Container.PART_Center == null) return;
@@ -210,7 +250,8 @@ namespace LoongEgg.Chart
         private Path HorizontalMinorLines = new Path();
         private Path VerticalMajorLines = new Path();
         private Path VerticalMinorLines = new Path();
-        public override void OnInitializing() {
+        public override void OnInitializing()
+        {
             Binding binding;
 
             binding = new Binding(nameof(Stroke)) { Source = this };
@@ -230,6 +271,7 @@ namespace LoongEgg.Chart
 
         public override void Update()
         {
+            if (InternalChange == true) return;
             if (Root == null)
             {
                 Debugger.Break();
@@ -237,7 +279,7 @@ namespace LoongEgg.Chart
             }
             Root.Children.Clear();
             if (RenderSize.Height == 0 || RenderSize.Width == 0) return;
-
+            Logger.Dbug($"GridLines[{this.GetHashCode()}] update x {++UpdateCount}");
             if (HorizontalMajorTicks != null && IsHorizontalMajorTickVisible == true)
                 UpdateHorizontalTicks(HorizontalMajorTicks, HorizontalMajorLines);
 
