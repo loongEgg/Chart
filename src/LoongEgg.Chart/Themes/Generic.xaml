@@ -46,10 +46,11 @@
                                 Grid.Column="1" />
 
                             <Border
+                                x:Name="PART_FigureBorder"
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Margin="-1"
-                                BorderBrush="DarkGreen"
+                                BorderBrush="{Binding FigureBorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Chart}}"
                                 BorderThickness="2">
                                 <Grid x:Name="PART_Center" Margin="-1" />
                             </Border>

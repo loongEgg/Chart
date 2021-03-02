@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media;
+using System;
 
 namespace LoongEgg.Chart
 {
@@ -16,6 +18,7 @@ namespace LoongEgg.Chart
     [TemplatePart(Name = nameof(PART_Top), Type = typeof(Panel))]
     [TemplatePart(Name = nameof(PART_Bottom), Type = typeof(Panel))]
     [TemplatePart(Name = nameof(PART_Center), Type = typeof(Panel))]
+    [TemplatePart(Name = nameof(PART_FigureBorder), Type = typeof(Border))]
     [ContentProperty(nameof(Children))]
 
     public class Chart : Control, IChart
@@ -25,9 +28,10 @@ namespace LoongEgg.Chart
         public Panel PART_Top { get; private set; }
         public Panel PART_Bottom { get; private set; }
         public Panel PART_Center { get; private set; }
+        public Border PART_FigureBorder { get; private set; }
 
         public bool InternalChange { get; set; }
-         
+
         public ValueToScreen HorizontalValueToScreen { get; private set; }
         public ValueToScreen VerticalValueToScreen { get; private set; }
 
@@ -46,7 +50,7 @@ namespace LoongEgg.Chart
 
             Loaded += (s, e) =>
             {
-                if(Children != null)
+                if (Children != null)
                 {
                     foreach (ChartElement item in Children)
                     {
@@ -69,6 +73,7 @@ namespace LoongEgg.Chart
             PART_Top = GetTemplateChild(nameof(PART_Top)) as Panel;
             PART_Bottom = GetTemplateChild(nameof(PART_Bottom)) as Panel;
             PART_Center = GetTemplateChild(nameof(PART_Center)) as Panel;
+            PART_FigureBorder = GetTemplateChild(nameof(PART_FigureBorder)) as Border;
 
             if (PART_Center != null)
                 PART_Center.SizeChanged += (s, e) => ResetValueToScreenMethod();
@@ -119,6 +124,54 @@ namespace LoongEgg.Chart
                 typeof(Chart),
                 new PropertyMetadata(default(IEnumerable<double>)));
 
+
+        [Description("")]
+        public Brush FigureBorderBrush
+        {
+            get { return (Brush)GetValue(FigureBorderBrushProperty); }
+            set { SetValue(FigureBorderBrushProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="FigureBorderBrush"/>
+        /// </summary>
+        public static readonly DependencyProperty FigureBorderBrushProperty = DependencyProperty.Register
+            (
+                nameof(FigureBorderBrush),
+                typeof(Brush),
+                typeof(Chart),
+                new PropertyMetadata(Brushes.Blue)
+            );
+
+
+        [Description("")]
+        public double FigureBorderThickness
+        {
+            get { return (double)GetValue(FigureBorderThicknessProperty); }
+            set { SetValue(FigureBorderThicknessProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="FigureBorderThickness"/>
+        /// </summary>
+        public static readonly DependencyProperty FigureBorderThicknessProperty = DependencyProperty.Register
+            (
+                nameof(FigureBorderThickness),
+                typeof(double),
+                typeof(Chart),
+                new PropertyMetadata(
+                    default(double),
+                    (s, e) =>
+                    {
+                        var self = s as Chart;
+                        if (self == null) return;
+                        if (self.PART_Center != null)
+                            self.PART_Center.Margin = new Thickness(-self.FigureBorderThickness / 2.0);
+                        if (self.PART_FigureBorder != null)
+                            self.PART_FigureBorder.Margin = new Thickness(-self.FigureBorderThickness / 2.0);
+                    },
+                    (s, e) => Math.Abs((double)e))
+            );
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -147,7 +200,7 @@ namespace LoongEgg.Chart
                         {
                             foreach (ChartElement item in collection)
                             {
-                                if(item != null) item.Container = self;
+                                if (item != null) item.Container = self;
                                 Logger.Dbug($"{item.GetType()} add", true);
                             }
                             collection.CollectionChanged += self.Collection_CollectionChanged;
@@ -255,7 +308,7 @@ namespace LoongEgg.Chart
             {
                 foreach (ChartElement item in collection)
                 {
-                    if(item != null ) item.Container = this; 
+                    if (item != null) item.Container = this;
                 }
             }
             // TODO: FIX

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace LoongEgg.Chart
 {
@@ -31,6 +32,10 @@ namespace LoongEgg.Chart
         /// 中间元素的容器
         /// </summary>
         Panel PART_Center { get; }
+        /// <summary>
+        /// 曲线图的边框
+        /// </summary>
+        Border PART_FigureBorder { get; }
         /// <summary>
         /// 横向主刻度
         /// </summary>
@@ -67,6 +72,10 @@ namespace LoongEgg.Chart
         /// 所有子元素(类型应该为IChartElement)集合, 子元素在被添加时应把<see cref="IChartElement.Container"/>设置为this
         /// </summary>
         ObservableCollection<object> Children { get; }
+
+        Brush FigureBorderBrush { get; set; }
+        double FigureBorderThickness { get; set; }
+
         /// <summary>
         /// 重置<see cref="HorizontalValueToScreen"/>和<see cref="VerticalValueToScreen"/>
         /// </summary>
