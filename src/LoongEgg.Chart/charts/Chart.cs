@@ -23,6 +23,8 @@ namespace LoongEgg.Chart
 
     public class Chart : Control, IChart
     {
+        public event EventHandler ValueToScreenMethodChanged;
+
         public Panel PART_Left { get; private set; }
         public Panel PART_Right { get; private set; }
         public Panel PART_Top { get; private set; }
@@ -32,8 +34,28 @@ namespace LoongEgg.Chart
 
         public bool InternalChange { get; set; }
 
-        public ValueToScreen HorizontalValueToScreen { get; private set; }
-        public ValueToScreen VerticalValueToScreen { get; private set; }
+        public ValueToScreen HorizontalValueToScreen
+        {
+            get { return _HorizontalValueToScreen; }
+            private set
+            {
+                _HorizontalValueToScreen = value;
+                if (value != null)
+                    ValueToScreenMethodChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        private ValueToScreen _HorizontalValueToScreen;
+        public ValueToScreen VerticalValueToScreen
+        {
+            get { return _VerticalValueToScreen; }
+            private set
+            {
+                _VerticalValueToScreen = value;
+                if (value != null)
+                    ValueToScreenMethodChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        private ValueToScreen _VerticalValueToScreen;
 
         static Chart()
         {
@@ -76,7 +98,9 @@ namespace LoongEgg.Chart
             PART_FigureBorder = GetTemplateChild(nameof(PART_FigureBorder)) as Border;
 
             if (PART_Center != null)
+            {
                 PART_Center.SizeChanged += (s, e) => ResetValueToScreenMethod();
+            }
 
             if (PART_Left == null
                 || PART_Right == null
@@ -123,54 +147,6 @@ namespace LoongEgg.Chart
                 typeof(IEnumerable<double>),
                 typeof(Chart),
                 new PropertyMetadata(default(IEnumerable<double>)));
-
-
-        [Description("")]
-        public Brush FigureBorderBrush
-        {
-            get { return (Brush)GetValue(FigureBorderBrushProperty); }
-            set { SetValue(FigureBorderBrushProperty, value); }
-        }
-        /// <summary>
-        /// Dependency property of <see cref="FigureBorderBrush"/>
-        /// </summary>
-        public static readonly DependencyProperty FigureBorderBrushProperty = DependencyProperty.Register
-            (
-                nameof(FigureBorderBrush),
-                typeof(Brush),
-                typeof(Chart),
-                new PropertyMetadata(Brushes.Blue)
-            );
-
-
-        [Description("")]
-        public double FigureBorderThickness
-        {
-            get { return (double)GetValue(FigureBorderThicknessProperty); }
-            set { SetValue(FigureBorderThicknessProperty, value); }
-        }
-        /// <summary>
-        /// Dependency property of <see cref="FigureBorderThickness"/>
-        /// </summary>
-        public static readonly DependencyProperty FigureBorderThicknessProperty = DependencyProperty.Register
-            (
-                nameof(FigureBorderThickness),
-                typeof(double),
-                typeof(Chart),
-                new PropertyMetadata(
-                    default(double),
-                    (s, e) =>
-                    {
-                        var self = s as Chart;
-                        if (self == null) return;
-                        if (self.PART_Center != null)
-                            self.PART_Center.Margin = new Thickness(-self.FigureBorderThickness / 2.0);
-                        if (self.PART_FigureBorder != null)
-                            self.PART_FigureBorder.Margin = new Thickness(-self.FigureBorderThickness / 2.0);
-                    },
-                    (s, e) => Math.Abs((double)e))
-            );
-
 
         /// <summary>
         /// 
@@ -335,5 +311,6 @@ namespace LoongEgg.Chart
             HorizontalValueToScreen = new ValueToScreen(v => kx * (v - HorizontalRange.Min));
             VerticalValueToScreen = new ValueToScreen(v => ky * (VerticalRange.Max - v));
         }
+
     }
 }

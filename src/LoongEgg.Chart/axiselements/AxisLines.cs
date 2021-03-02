@@ -52,7 +52,7 @@ namespace LoongEgg.Chart
                 nameof(StrokeThickness),
                 typeof(double),
                 typeof(AxisTicks),
-                new PropertyMetadata(1d, OnParameterChanged));
+                new PropertyMetadata(2d, OnParameterChanged));
 
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace LoongEgg.Chart
                 typeof(double),
                 typeof(AxisTicks),
                 new PropertyMetadata(
-                    0d,
+                    10d,
                     (s, e) =>
                     {
                         var self = s as AxisLines;
@@ -160,6 +160,11 @@ namespace LoongEgg.Chart
                 Canvas.SetBottom(Lines, Gap);
             else if (Placement == Placements.Bottom)
                 Canvas.SetTop(Lines, Gap);
+            else if (Placement == Placements.Left)
+                Canvas.SetRight(Lines, Gap);
+            else if (Placement == Placements.Right)
+                Canvas.SetLeft(Lines, Gap);
+                
         }
 
         public override void OnContainerSet()

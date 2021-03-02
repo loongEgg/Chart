@@ -69,18 +69,7 @@ namespace LoongEgg.Chart
                 new PropertyMetadata(default(DataSeries), OnDataSeriesChanged)
             );
 
-        public Figure()
-        {
-            SizeChanged += (s, e) =>
-            {
-                ResetNormalizeMethods();
-            };
-            Loaded += (s, e) =>
-            {
-                ResetNormalizeMethods();
-            };
-
-        }
+       
 
         private static void OnDataSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -146,6 +135,10 @@ namespace LoongEgg.Chart
 
         public override void OnContainerSet()
         {
+            if(Container != null)
+            {
+                Container.ValueToScreenMethodChanged += (s, e) => ResetNormalizeMethods();
+            }
             ResetPlacement();
             ResetNormalizeMethods();
             Update();

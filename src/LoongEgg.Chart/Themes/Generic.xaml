@@ -50,12 +50,36 @@
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Margin="-1"
-                                BorderBrush="{Binding FigureBorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Chart}}"
+                                BorderBrush="DarkGreen"
                                 BorderThickness="2">
                                 <Grid x:Name="PART_Center" Margin="-1" />
                             </Border>
                         </Grid>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:TimerChart}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TimerChart}">
+
+                    <local:Chart
+                        HorizontalRange="{Binding TimeRange, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChart}}"
+                        x:Name="PART_Chart"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <local:GridLines StrokeThickness="0.5" />
+                        <local:AxisLines Placement="Bottom" />
+                        <local:AxisLines Placement="Top" />
+                        <local:AxisLines Placement="Left" />
+                        <local:AxisLines Placement="Right" />
+                        <local:PolylineFigure />
+                    </local:Chart>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

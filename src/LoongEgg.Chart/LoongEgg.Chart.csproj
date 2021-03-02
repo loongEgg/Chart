@@ -63,6 +63,7 @@
     <Compile Include="axiselements\AxisLines.cs" />
     <Compile Include="chartelements\ChartElement.cs" />
     <Compile Include="charts\Chart.cs" />
+    <Compile Include="Clock.cs" />
     <Compile Include="contracts\IAxisElement.cs" />
     <Compile Include="contracts\IAxisLines.cs" />
     <Compile Include="contracts\IAxisMarker.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="contracts\IGridLines.cs" />
     <Compile Include="enums\Placements.cs" />
     <Compile Include="enums\TickLevels.cs" />
+    <Compile Include="charts\TimerChart.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,6 +86,8 @@
     <Compile Include="contracts\ICountOnUpdate.cs" />
     <Compile Include="contracts\IFigure.cs" />
     <Compile Include="figures\PolylineFigure.cs" />
+    <Compile Include="contracts\ITimerChart.cs" />
+    <Compile Include="enums\Intervals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -24,7 +24,7 @@ namespace LoongEgg.Chart
                 nameof(Gap),
                 typeof(double),
                 typeof(AxisElement),
-                new PropertyMetadata(default(double), (s, e) => (s as AxisElement)?.Update()));
+                new PropertyMetadata(-10.0, (s, e) => (s as AxisElement)?.Update()));
                
         /// <summary>
         /// 

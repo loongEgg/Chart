@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System;
 
 namespace LoongEgg.Chart
 {
@@ -73,14 +74,15 @@ namespace LoongEgg.Chart
         /// </summary>
         ObservableCollection<object> Children { get; }
 
-        Brush FigureBorderBrush { get; set; }
-        double FigureBorderThickness { get; set; }
+        /// <summary>
+        /// 投影算法改变时
+        /// </summary>
+        event EventHandler ValueToScreenMethodChanged;
 
         /// <summary>
         /// 重置<see cref="HorizontalValueToScreen"/>和<see cref="VerticalValueToScreen"/>
         /// </summary>
         void ResetValueToScreenMethod();
-
     }
 
    
