@@ -70,10 +70,7 @@
                         x:Name="PART_Chart"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        HorizontalMajorTicks="{Binding HorizontalMajorTicks, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChart}}"
-                        HorizontalMinorTicks="{Binding HorizontalMinorTicks, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChart}}"
-                        HorizontalRange="{Binding TimeRange, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChart}}">
+                        BorderThickness="{TemplateBinding BorderThickness}">
                         <local:GridLines StrokeThickness="0.5" />
                         <local:AxisLines Placement="Bottom" />
                         <local:AxisLines Placement="Top" />

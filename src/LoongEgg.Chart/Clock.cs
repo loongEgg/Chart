@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Threading;
 using LoongEgg.Log;
 
@@ -17,40 +18,46 @@ namespace LoongEgg.Chart
         public int LastSecond { get; private set; }
         public int LastMilliSecond { get; private set; }
         public double LastElapsedSecond { get; private set; }
+        public double TimeStamp => LastSecond + LastMilliSecond / 1000.0;
         public DispatcherTimer Timer { get; } = new DispatcherTimer();
+        /// <summary>
+        /// 每个时钟周期, 约32ms
+        /// </summary>
+        public event EventHandler Tick;
+        private double Count;
+        public int FPS { get; private set; }
 
         Clock()
         {
             ClockCount += 1;
             ClockId = ClockCount;
 
-            Timer.Interval = TimeSpan.FromMilliseconds(10);
+            Timer.Interval = TimeSpan.FromMilliseconds(4);
             DateTime now;
-            int fps = 0;
+            
             Timer.Tick += (s, e) =>
             {
                 now = DateTime.Now;
                 LastHour = now.Hour;
                 LastMinute = now.Minute;
-
-#if DEBUG
-                if (now.Second != LastSecond)
+                LastMilliSecond = now.Millisecond; 
+                if (LastMilliSecond - Count > 28)
                 {
-                    Logger.Dbug($"Clock:{ClockId}, FPS: {fps}, LastElapsedSecond: {LastElapsedSecond}");
-                    LastSecond = now.Second;
-                    fps = 0;
+                    Count = LastMilliSecond;
+                    FPS += 1;
+                    Tick?.Invoke(this, EventArgs.Empty);
                 }
-                fps += 1;
-#endif
-                if (now.Millisecond > LastMilliSecond)
-                    LastElapsedSecond = (now.Millisecond - LastMilliSecond) / 1000.0;
-                else
-                    LastElapsedSecond = (1000.0 - LastMilliSecond) / 1000.0;
-                LastMilliSecond = now.Millisecond;
-
+                if (LastSecond != now.Second)
+                {
+                    Debug.WriteLine($"FPF: {FPS}");
+                    FPS = 0;
+                    Count = 0; 
+                }
                 LastSecond = now.Second;
+
             };
             Timer.Start();
         }
+       
     }
 }

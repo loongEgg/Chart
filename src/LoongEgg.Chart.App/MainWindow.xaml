@@ -13,9 +13,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
+            <!--<ColumnDefinition />-->
         </Grid.ColumnDefinitions>
-        <c:Chart
+        <!--<c:Chart
             Margin="2"
             BorderBrush="DarkGreen"
             BorderThickness="2">
@@ -25,8 +25,8 @@
             <c:AxisLines Placement="Left" />
             <c:AxisLines Placement="Right" />
             <c:PolylineFigure />
-        </c:Chart>
+        </c:Chart>-->
 
-        <c:TimerChart Grid.Column="1" Interval="Sec20" />
+        <c:TimerChart Grid.Column="1" />
     </Grid>
 </Window>
