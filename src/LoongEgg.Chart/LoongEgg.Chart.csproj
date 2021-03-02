@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -60,7 +61,7 @@
     <Compile Include="axiselements\base\AxisElement.cs" />
     <Compile Include="axiselements\base\AxisTicks.cs" />
     <Compile Include="axiselements\AxisLines.cs" />
-    <Compile Include="chartelements\base\ChartElement.cs" />
+    <Compile Include="chartelements\ChartElement.cs" />
     <Compile Include="charts\Chart.cs" />
     <Compile Include="contracts\IAxisElement.cs" />
     <Compile Include="contracts\IAxisLines.cs" />
@@ -78,8 +79,11 @@
   <ItemGroup>
     <Compile Include="contracts\IChart.cs" />
     <Compile Include="contracts\IChartElement.cs" />
+    <Compile Include="figures\Figure.cs" />
     <Compile Include="gridlines\GridLines.cs" />
-    <Compile Include="ICountOnUpdate.cs" />
+    <Compile Include="contracts\ICountOnUpdate.cs" />
+    <Compile Include="contracts\IFigure.cs" />
+    <Compile Include="figures\PolylineFigure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -102,8 +106,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="figures\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

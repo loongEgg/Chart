@@ -26,6 +26,8 @@
             <c:AxisLines Placement="Top" />
             <c:AxisLines Placement="Left" />
             <c:AxisLines Placement="Right" />
+
+            <c:PolylineFigure/>
         </c:Chart>
     </Grid>
 </Window>

@@ -3,13 +3,14 @@ using System.Windows.Controls;
 
 namespace LoongEgg.Chart
 {
+
     interface IChartElement
     {
         /// <summary>
         /// 根容器
         /// </summary>
         /// <remarks>
-        ///  on set, set: <code>This.Content = Root;</code>
+        ///  默认在<see cref="ChartElement"/>的构造器中被设置为new Canvas(), 并让Content = Root.
         /// </remarks>
         Panel Root { get; }
         /// <summary>
