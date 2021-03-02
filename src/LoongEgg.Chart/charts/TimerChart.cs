@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -14,7 +15,7 @@ namespace LoongEgg.Chart
     {
         private static Clock Clock = Clock.Singleton;
         public Chart PART_Chart { get; internal set; }
-         
+
         static TimerChart()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TimerChart), new FrameworkPropertyMetadata(typeof(TimerChart)));
@@ -50,14 +51,14 @@ namespace LoongEgg.Chart
                 nameof(Interval),
                 typeof(Intervals),
                 typeof(TimerChart),
-                new PropertyMetadata(default(Intervals), OnParameterChanged)
+                new PropertyMetadata(Intervals.Sec60, OnParameterChanged)
             );
 
         [Description("")]
         public Range TimeRange
         {
             get { return (Range)GetValue(TimeRangeProperty); }
-            set { SetValue(TimeRangeProperty, value); }
+            private set { SetValue(TimeRangeProperty, value); }
         }
         /// <summary>
         /// Dependency property of <see cref="TimeRange"/>
@@ -71,6 +72,41 @@ namespace LoongEgg.Chart
             );
 
 
+        [Description("")]
+        public IEnumerable<double> HorizontalMajorTicks
+        {
+            get { return (IEnumerable<double>)GetValue(HorizontalMajorTicksProperty); }
+            set { SetValue(HorizontalMajorTicksProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="HorizontalMajorTicks"/>
+        /// </summary>
+        public static readonly DependencyProperty HorizontalMajorTicksProperty = DependencyProperty.Register
+            (
+                nameof(HorizontalMajorTicks),
+                typeof(IEnumerable<double>),
+                typeof(TimerChart),
+                new PropertyMetadata(default(IEnumerable<double>))
+            );
+
+
+        [Description("")]
+        public IEnumerable<double> HorizontalMinorTicks
+        {
+            get { return (IEnumerable<double>)GetValue(HorizontalMinorTicksProperty); }
+            set { SetValue(HorizontalMinorTicksProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="HorizontalMinorTicks"/>
+        /// </summary>
+        public static readonly DependencyProperty HorizontalMinorTicksProperty = DependencyProperty.Register
+            (
+                nameof(HorizontalMinorTicks),
+                typeof(IEnumerable<double>),
+                typeof(TimerChart),
+                new PropertyMetadata(default(IEnumerable<double>))
+            );
+
 
         private static void OnParameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -78,21 +114,45 @@ namespace LoongEgg.Chart
             if (self == null) return;
             if (e.Property == IntervalProperty)
             {
-                if (self.Interval == Intervals.Sec10
-                    || self.Interval == Intervals.Sec20
-                    || self.Interval == Intervals.Sec30)
+                List<double> majorTicks = new List<double>();
+                List<double> minorTicks = new List<double>();
+                if (self.Interval == Intervals.Sec10)
                 {
-                    self.TimeRange = new Range(-10, (int)self.Interval);
+                    int min = -5;
+                    self.TimeRange = new Range(min, (int)self.Interval);
+
+                    for (int i = min; i < (int)self.Interval; i += 1)
+                        majorTicks.Add(i);
+
+                    for (double i = min; i < (int)self.Interval; i += 0.5)
+                        minorTicks.Add(i);
                 }
-                else if (self.Interval == Intervals.Sec60)
+                else if (self.Interval == Intervals.Sec20
+                   || self.Interval == Intervals.Sec30)
                 {
-                    self.TimeRange = new Range(-20, 60);
+                    int min = -10;
+                    self.TimeRange = new Range(min, (int)self.Interval);
+
+                    for (int i = min; i < (int)self.Interval; i += 5)
+                        majorTicks.Add(i);
+
+                    for (double i = min; i < (int)self.Interval; i += 1)
+                        minorTicks.Add(i);
+                }
+                else if (self.Interval == Intervals.Sec60 || self.Interval == Intervals.Sec120)
+                {
+                    int min = -10;
+                    self.TimeRange = new Range(min, (int)self.Interval);
+
+                    for (int i = min; i < (int)self.Interval; i += 10)
+                        majorTicks.Add(i);
+
+                    for (double i = min; i < (int)self.Interval; i += 5)
+                        minorTicks.Add(i);
 
                 }
-                else if (self.Interval == Intervals.Sec120)
-                {
-                    self.TimeRange = new Range(-20, 120);
-                }
+                self.HorizontalMajorTicks = majorTicks;
+                self.HorizontalMinorTicks = minorTicks;
             }
         }
 

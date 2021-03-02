@@ -23,10 +23,10 @@
             <c:AxisLines Placement="Bottom" />
             <c:AxisLines Placement="Top" />
             <c:AxisLines Placement="Left" />
-            <c:AxisLines Placement="Right" /> 
+            <c:AxisLines Placement="Right" />
             <c:PolylineFigure />
         </c:Chart>
 
-        <c:TimerChart Grid.Column="1"/>
+        <c:TimerChart Grid.Column="1" Interval="Sec20" />
     </Grid>
 </Window>

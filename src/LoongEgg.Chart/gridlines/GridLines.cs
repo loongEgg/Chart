@@ -168,7 +168,7 @@ namespace LoongEgg.Chart
                 nameof(IsHorizontalMinorTickVisible),
                 typeof(bool),
                 typeof(GridLines),
-                new PropertyMetadata(true, OnParameterChanged));
+                new PropertyMetadata(false, OnParameterChanged));
 
         /// <summary>
         /// 
@@ -206,7 +206,7 @@ namespace LoongEgg.Chart
                 nameof(IsVerticalMinorTickVisible),
                 typeof(bool),
                 typeof(GridLines),
-                new PropertyMetadata(true, OnParameterChanged));
+                new PropertyMetadata(false, OnParameterChanged));
 
         #endregion
 

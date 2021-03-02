@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -102,6 +103,7 @@ namespace LoongEgg.Chart
             if (Root == null) return;
             Root.Children.Clear();
             if (RenderSize.Height == 0 && RenderSize.Width == 0) return;
+            if (Ticks == null || Ticks.Count() <= 1) return;
             Logger.Dbug($"AxisLines[{this.GetHashCode()}] update x {++UpdateCount}");
             GeometryGroup group = new GeometryGroup();
             ValueToScreen valueToScreen = ValueToScreen;
