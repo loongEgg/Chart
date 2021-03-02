@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4A2A4068-C9DE-4301-80DF-CB3BBEF14291}</ProjectGuid>
-    <OutputType>library</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>LoongEgg.Chart</RootNamespace>
     <AssemblyName>LoongEgg.Chart</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -30,6 +30,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LoongEgg.Core">
@@ -58,36 +61,37 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="axiselements\base\AxisElement.cs" />
-    <Compile Include="axiselements\base\AxisTicks.cs" />
-    <Compile Include="axiselements\AxisLines.cs" />
-    <Compile Include="chartelements\ChartElement.cs" />
-    <Compile Include="charts\Chart.cs" />
-    <Compile Include="Clock.cs" />
-    <Compile Include="contracts\IAxisElement.cs" />
-    <Compile Include="contracts\IAxisLines.cs" />
-    <Compile Include="contracts\IAxisMarker.cs" />
-    <Compile Include="contracts\IAxisTicks.cs" />
-    <Compile Include="contracts\IGridLines.cs" />
-    <Compile Include="enums\Placements.cs" />
-    <Compile Include="enums\TickLevels.cs" />
-    <Compile Include="charts\TimerChart.cs" />
+    <Compile Include="AxisElements\base\AxisElement.cs" />
+    <Compile Include="AxisElements\base\AxisTicks.cs" />
+    <Compile Include="AxisElements\AxisLines.cs" />
+    <Compile Include="AxisElements\AxisLabels.cs" />
+    <Compile Include="ChartElements\ChartElement.cs" />
+    <Compile Include="Charts\Chart.cs" />
+    <Compile Include="Clock\Clock.cs" />
+    <Compile Include="Contracts\IAxisElement.cs" />
+    <Compile Include="Contracts\IAxisLines.cs" />
+    <Compile Include="Contracts\IAxisMarker.cs" />
+    <Compile Include="Contracts\IAxisTicks.cs" />
+    <Compile Include="Contracts\IGridLines.cs" />
+    <Compile Include="Enums\Placements.cs" />
+    <Compile Include="Enums\TickLevels.cs" />
+    <Compile Include="Charts\TimerChart.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="delegates\ValueToScreen.cs" />
+    <Compile Include="Delegates\ValueToScreen.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="contracts\IChart.cs" />
-    <Compile Include="contracts\IChartElement.cs" />
-    <Compile Include="figures\Figure.cs" />
-    <Compile Include="gridlines\GridLines.cs" />
-    <Compile Include="contracts\ICountOnUpdate.cs" />
-    <Compile Include="contracts\IFigure.cs" />
-    <Compile Include="figures\PolylineFigure.cs" />
-    <Compile Include="contracts\ITimerChart.cs" />
-    <Compile Include="enums\Intervals.cs" />
+    <Compile Include="Contracts\IChart.cs" />
+    <Compile Include="Contracts\IChartElement.cs" />
+    <Compile Include="Figures\Figure.cs" />
+    <Compile Include="GridLines\GridLines.cs" />
+    <Compile Include="Contracts\ICountOnUpdate.cs" />
+    <Compile Include="Contracts\IFigure.cs" />
+    <Compile Include="Figures\PolylineFigure.cs" />
+    <Compile Include="Contracts\ITimerChart.cs" />
+    <Compile Include="Enums\Intervals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

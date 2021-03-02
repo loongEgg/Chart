@@ -120,7 +120,10 @@ namespace LoongEgg.Chart
             }
             if (e.NewItems != null)
             {
-
+                foreach (Data.Point p in e.NewItems)
+                {
+                    NormalizedPoints.Add(Normalize(p.X, p.Y));
+                }
                 Update();
             }
         }

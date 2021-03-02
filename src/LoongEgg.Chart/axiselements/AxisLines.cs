@@ -165,8 +165,7 @@ namespace LoongEgg.Chart
             else if (Placement == Placements.Left)
                 Canvas.SetRight(Lines, Gap);
             else if (Placement == Placements.Right)
-                Canvas.SetLeft(Lines, Gap);
-                
+                Canvas.SetLeft(Lines, Gap);                
         }
 
         public override void OnContainerSet()

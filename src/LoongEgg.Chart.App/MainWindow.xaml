@@ -13,19 +13,26 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <!--<ColumnDefinition />-->
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <!--<c:Chart
+        <c:Chart
             Margin="2"
+            FontFamily="Consolas"
             BorderBrush="DarkGreen"
-            BorderThickness="2">
+            BorderThickness="2"
+            FontSize="12"
+            Foreground="DarkGreen">
             <c:GridLines StrokeThickness="0.5" />
             <c:AxisLines Placement="Bottom" />
             <c:AxisLines Placement="Top" />
             <c:AxisLines Placement="Left" />
             <c:AxisLines Placement="Right" />
+            <c:AxisLabels Placement="Top" />
+            <c:AxisLabels Placement="Left" />
+            <c:AxisLabels Placement="Right" />
+            <c:AxisLabels Placement="Bottom" />
             <c:PolylineFigure />
-        </c:Chart>-->
+        </c:Chart>
 
         <c:TimerChart Grid.Column="1" />
     </Grid>

@@ -21,10 +21,9 @@ namespace LoongEgg.Chart
         public double TimeStamp => LastSecond + LastMilliSecond / 1000.0;
         public DispatcherTimer Timer { get; } = new DispatcherTimer();
         /// <summary>
-        /// 每个时钟周期, 约32ms
+        /// 每个时钟周期, 约15.6ms间隔, 在VS中会很慢约25Hz, 但是独立运行可以到64Hz
         /// </summary>
         public event EventHandler Tick;
-        private double Count;
         public int FPS { get; private set; }
 
         Clock()
@@ -32,32 +31,35 @@ namespace LoongEgg.Chart
             ClockCount += 1;
             ClockId = ClockCount;
 
-            Timer.Interval = TimeSpan.FromMilliseconds(4);
+            Timer.Interval = TimeSpan.FromMilliseconds(1);
             DateTime now;
-            
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            double lastTime = 0;
             Timer.Tick += (s, e) =>
             {
                 now = DateTime.Now;
                 LastHour = now.Hour;
                 LastMinute = now.Minute;
-                LastMilliSecond = now.Millisecond; 
-                if (LastMilliSecond - Count > 28)
+                LastMilliSecond = now.Millisecond;
+                if (watch.ElapsedMilliseconds - lastTime > 2)
                 {
-                    Count = LastMilliSecond;
+                    lastTime = watch.ElapsedMilliseconds;
                     FPS += 1;
                     Tick?.Invoke(this, EventArgs.Empty);
                 }
-                if (LastSecond != now.Second)
+                if (lastTime >= 1000)
                 {
-                    Debug.WriteLine($"FPF: {FPS}");
+                    lastTime = 0;
+                    Logger.Dbug($"FPF: {FPS}");
                     FPS = 0;
-                    Count = 0; 
+                    watch.Restart();
                 }
                 LastSecond = now.Second;
 
             };
             Timer.Start();
         }
-       
+
     }
 }

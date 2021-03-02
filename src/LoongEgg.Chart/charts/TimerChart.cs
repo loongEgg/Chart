@@ -23,7 +23,10 @@ namespace LoongEgg.Chart
 
         public TimerChart()
         {
-
+            Clock.Tick += (s, e) =>
+            {
+                AddNewValue(Clock.TimeStamp);
+            };
         }
 
         public override void OnApplyTemplate()
@@ -35,8 +38,7 @@ namespace LoongEgg.Chart
                 Debugger.Break();
             }
             else
-            {
-
+            { 
                 PART_Chart.HorizontalRange = new Range(-20, 60);
                 List<double> ticks = new List<double>();
                 for (int i = -20; i <= 60; i += 5)
@@ -51,6 +53,8 @@ namespace LoongEgg.Chart
                     ticks.Add(i);
                 }
                 PART_Chart.HorizontalMinorTicks = ticks;
+
+                PART_Chart.Children.Add(new PolylineFigure() { DataSeries = this.DataSeries });
             }
         }
         

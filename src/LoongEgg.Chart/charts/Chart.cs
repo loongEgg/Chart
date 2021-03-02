@@ -67,8 +67,8 @@ namespace LoongEgg.Chart
             Children = new ObservableCollection<object>();
             SetCurrentValue(HorizontalRangeProperty, new Range(0, 200));
             SetCurrentValue(VerticalRangeProperty, new Range(-30, 30));
-            SetCurrentValue(HorizontalMajorTicksProperty, new double[] { 25, 50, 75, 100, 125, 150, 175 });
-            SetCurrentValue(VerticalMajorTicksProperty, new double[] { -20, -10, 0, 10, 20 });
+            SetCurrentValue(HorizontalMajorTicksProperty, new double[] { 0, 25, 50, 75, 100, 125, 150, 175,200 });
+            SetCurrentValue(VerticalMajorTicksProperty, new double[] { -30,-20, -10, 0, 10, 20,30 });
 
             Loaded += (s, e) =>
             {

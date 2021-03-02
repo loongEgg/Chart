@@ -17,7 +17,7 @@ namespace LoongEgg.Chart.App
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Logger.Enable(Loggers.Debug);
+            Logger.Enable(Loggers.Console);
             this.MainWindow = new MainWindow();
             this.MainWindow.Show();
         }
