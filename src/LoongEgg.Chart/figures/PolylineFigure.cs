@@ -14,7 +14,7 @@ namespace LoongEgg.Chart
             if (ActualHeight == 0 || ActualWidth == 0) return;
             if (NormalizedPoints == null || NormalizedPoints.Count <= 1) return;
 
-            Logger.Dbug($"PolylineFigure[{GetHashCode()}] update x {(++UpdateCount)}");
+            //Logger.Dbug($"PolylineFigure[{GetHashCode()}] update x {(++UpdateCount)}");
 
             // 创建一个新的图形
             WriteableBitmap bitmap = new WriteableBitmap

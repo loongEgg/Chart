@@ -76,6 +76,11 @@
     <Compile Include="Enums\Placements.cs" />
     <Compile Include="Enums\TickLevels.cs" />
     <Compile Include="Charts\TimerChart.cs" />
+    <Compile Include="Contracts\ISignal.cs" />
+    <Compile Include="Contracts\IFilter.cs" />
+    <Compile Include="Filters\Filter.cs" />
+    <Compile Include="Filters\RangeFilter.cs" />
+    <Compile Include="Signal\Signal.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -212,8 +212,7 @@ namespace LoongEgg.Chart
                 typeof(IEnumerable<double>),
                 typeof(Chart),
                 new PropertyMetadata(default(IEnumerable<double>)));
-
-
+        
         /// <summary>
         /// 
         /// </summary>

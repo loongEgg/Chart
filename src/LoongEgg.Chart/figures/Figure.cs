@@ -118,6 +118,16 @@ namespace LoongEgg.Chart
                 NormalizedPoints.RemoveRange(start, length);
                 Update();
             }
+            if(e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                NormalizedPoints.Clear();
+               
+                foreach (Data.Point p in DataSeries)
+                {
+                    NormalizedPoints.Add(Normalize(p.X, p.Y));
+                }
+                Update();
+            }
             if (e.NewItems != null)
             {
                 foreach (Data.Point p in e.NewItems)
