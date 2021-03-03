@@ -28,9 +28,9 @@ namespace LoongEgg.Chart
 
         private readonly static List<SolidColorBrush> DefaultBrushes = new List<SolidColorBrush>()
         {
-            Brushes.Tomato,
-            Brushes.Teal,
-            Brushes.RoyalBlue
+            Brushes.Red,
+            Brushes.Green,
+            Brushes.Blue
         };
 
         #endregion
@@ -163,6 +163,10 @@ namespace LoongEgg.Chart
                 || PART_FigureContainer == null)
                 Debugger.Break();
 #endif 
+            if (DataGroup != null)
+            {
+                OnDataGroupReset(this, null, DataGroup);
+            }
         }
 
         #endregion
@@ -291,6 +295,7 @@ namespace LoongEgg.Chart
             {
                 oldCollection.CollectionChanged += self.DataGroup_CollectionChanged;
             }
+            if (newCollection == null) return;
             foreach (var item in newCollection)
             {
                 var id = self.PART_FigureContainer.Children.Count;
