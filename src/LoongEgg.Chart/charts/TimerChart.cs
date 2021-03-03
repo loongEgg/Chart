@@ -40,7 +40,7 @@ namespace LoongEgg.Chart
             SetCurrentValue(VerticalMajorTicksProperty, new double[] { -30, -20, -10, 0, 10, 20, 30 });
             SetCurrentValue(TimeRangeProperty, new Range(-30, 60));
             SetCurrentValue(ValueRangeProperty, new Range(-50, 50));
-            SetCurrentValue(SignalProperty, SinSignal);
+            SetCurrentValue(SignalProperty, Signal.TriangleSignal);
 
             int lastMinute = Clock.LastMinute;
             Clock.Tick += (s, e) =>
@@ -54,19 +54,8 @@ namespace LoongEgg.Chart
             };
         }
 
-        private readonly static Signal SinSignal;
         static TimerChart()
         {
-            SinSignal = new Signal()
-            {
-                Label = "Sin(t)",
-                Unit = "1-s"
-            };
-            double degToRad = Math.PI / 180.0;
-            Clock.Tick += (s, e) =>
-            {
-                SinSignal.Value = Math.Sin(Clock.TimeStamp * degToRad * 6.0) * 30;
-            };
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TimerChart), new FrameworkPropertyMetadata(typeof(TimerChart)));
         }
 
@@ -276,7 +265,6 @@ namespace LoongEgg.Chart
         public void AddNewValue(double val)
         {
             DataSeries.Add(new Data.Point(Clock.TimeStamp, val));
-            //if () ResetDataSeries();
         }
 
         public void ResetDataSeries()

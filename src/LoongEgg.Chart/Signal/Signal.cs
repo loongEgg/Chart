@@ -2,23 +2,26 @@
 
 namespace LoongEgg.Chart
 {
-    public class Signal : BindableObject, ISignal
+    public partial class Signal : BindableObject, ISignal
     {
-
         public double Value
         {
             get { return _Value; }
-            set { SetProperty(ref _Value, value); }
+            set
+            {
+                _Value = value;
+                RaisePropertyChanged(nameof(Value));
+            }
         }
         private double _Value;
-        
+
         public string Label
         {
             get { return _Label; }
             set { SetProperty(ref _Label, value); }
         }
         private string _Label;
-        
+
         public string Unit
         {
             get { return _Unit; }
