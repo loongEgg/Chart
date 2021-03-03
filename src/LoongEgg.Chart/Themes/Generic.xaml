@@ -52,7 +52,10 @@
                                 Margin="-1"
                                 BorderBrush="DarkGreen"
                                 BorderThickness="2">
-                                <Grid x:Name="PART_Center" Margin="-1" />
+                                <Grid Margin="-1">
+                                    <Grid x:Name="PART_Center" />
+                                    <Grid x:Name="PART_FigureContainer" />
+                                </Grid>
                             </Border>
                         </Grid>
                     </Border>

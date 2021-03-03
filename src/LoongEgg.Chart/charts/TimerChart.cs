@@ -86,7 +86,7 @@ namespace LoongEgg.Chart
                 var signalCollection = new ObservableCollection<Signal>();
                 signalCollection.Add(Signal.SinSignal);
                 signalCollection.Add(Signal.CosSignal);
-                signalCollection.Add(Signal.SquareSignal);
+                signalCollection.Add(Signal.TriangleSignal);
                 this.SignalCollection = signalCollection;
             }
         }

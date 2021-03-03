@@ -59,7 +59,7 @@ namespace LoongEgg.Chart
             var signal = new Signal() { Label = "Square(t)" };
             Timer.Tick += (s, e) =>
             {
-                double t = (int)((DateTime.Now.Second * 1000 + DateTime.Now.Millisecond)) % T;
+                double t = (int)(DateTime.Now.Second * 1000 + DateTime.Now.Millisecond) % T;
                 if (t <= Thalf)
                     signal.Value = 25;
                 else
@@ -77,19 +77,19 @@ namespace LoongEgg.Chart
             double T2 = 10 * 1000;
             double T3 = 15 * 1000;
             var signal = new Signal() { Label = "Triangle(t)" };
-            Clock.Tick += (s, e) =>
+            Timer.Tick += (s, e) =>
             {
 
-                double t = (DateTime.Now.Second * 1000 + DateTime.Now.Millisecond) % T;
+                double t = (int)(DateTime.Now.Second * 1000 + DateTime.Now.Millisecond) % T;
                 double time = t / 1000.0;
                 if (t < T1)
-                    signal.Value = time * 2.0;
+                    signal.Value = time * 4.0 - 10;
                 else if (t <= T2)
-                    signal.Value = -(time - 5) * 2.0 + 10;
+                    signal.Value = -(time - 5) * 4.0 + 10;
                 else if (t <= T3)
-                    signal.Value = (time - 10) * 2.0 - 10;
-                else
-                    signal.Value = -(time - 15) * 2.0 + 10;
+                    signal.Value = (time - 10) * 4.0 - 10;
+                else if (t < T)
+                    signal.Value = -(time - 15) * 4.0 + 10;
             };
             return signal;
         }

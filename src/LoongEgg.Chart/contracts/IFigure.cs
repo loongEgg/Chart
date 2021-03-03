@@ -4,6 +4,7 @@ using LoongEgg.Data;
 
 namespace LoongEgg.Chart
 {
+    
     interface IFigure
     {
         ValueToScreen HorizontalValueToScreen { get; }

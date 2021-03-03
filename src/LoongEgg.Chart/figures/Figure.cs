@@ -11,6 +11,8 @@ using Brushes = System.Windows.Media.Brushes;
 
 namespace LoongEgg.Chart
 {
+    // TODO: make Figure not implement from ChartElement, but Figure itself is the base class.
+    //       so when Children property of Chart changed, it will not influence the figures.
     public abstract class Figure : ChartElement, IFigure
     {
         public ValueToScreen HorizontalValueToScreen { get; internal set; } = new ValueToScreen((v) => v);
@@ -48,7 +50,7 @@ namespace LoongEgg.Chart
                 nameof(StrokeThickness),
                 typeof(float),
                 typeof(Figure),
-                new PropertyMetadata(1f, OnParameterChanged)
+                new PropertyMetadata(2f, OnParameterChanged)
             );
 
 
@@ -68,8 +70,7 @@ namespace LoongEgg.Chart
                 typeof(Figure),
                 new PropertyMetadata(default(DataSeries), OnDataSeriesChanged)
             );
-
-       
+        
 
         private static void OnDataSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -181,7 +182,7 @@ namespace LoongEgg.Chart
         {
             if (Container == null) return;
             (Parent as Panel)?.Children.Remove(this);
-            Container.PART_Center?.Children.Add(this);
+            Container.PART_FigureContainer?.Children.Add(this);
         }
 
     }

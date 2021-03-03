@@ -38,6 +38,10 @@ namespace LoongEgg.Chart
         /// </summary>
         Border PART_FigureBorder { get; }
         /// <summary>
+        /// 曲线容器
+        /// </summary>
+        Panel PART_FigureContainer { get; }
+        /// <summary>
         /// 横向主刻度
         /// </summary>
         IEnumerable<double> HorizontalMajorTicks { get; set; }
@@ -73,7 +77,10 @@ namespace LoongEgg.Chart
         /// 所有子元素(类型应该为IChartElement)集合, 子元素在被添加时应把<see cref="IChartElement.Container"/>设置为this
         /// </summary>
         ObservableCollection<object> Children { get; }
-
+        /// <summary>
+        /// 数据组 collection of DataSeries
+        /// </summary>
+        ObservableCollection<DataSeries> DataGroup { get; set; }
         /// <summary>
         /// 投影算法改变时
         /// </summary>
