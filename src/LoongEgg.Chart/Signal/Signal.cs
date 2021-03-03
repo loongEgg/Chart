@@ -1,4 +1,5 @@
-﻿using LoongEgg.Core;
+﻿using System;
+using LoongEgg.Core;
 
 namespace LoongEgg.Chart
 {
@@ -11,24 +12,26 @@ namespace LoongEgg.Chart
             {
                 _Value = value;
                 RaisePropertyChanged(nameof(Value));
+                ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private double _Value;
-
+         
         public string Label
         {
             get { return _Label; }
             set { SetProperty(ref _Label, value); }
         }
-        private string _Label;
-
+        private string _Label = "[ label ]";
+         
         public string Unit
         {
             get { return _Unit; }
             set { SetProperty(ref _Unit, value); }
         }
-        private string _Unit;
+        private string _Unit = "-";
 
 
+        public event EventHandler ValueChanged;
     }
 }

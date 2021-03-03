@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace LoongEgg.Chart
 {
@@ -18,5 +19,7 @@ namespace LoongEgg.Chart
         /// </summary>
         [DefaultValue("-")]
         string Unit { get; set; }
+
+        event EventHandler ValueChanged;
     }
 }
