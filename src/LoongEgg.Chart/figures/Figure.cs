@@ -12,8 +12,6 @@ using Brushes = System.Windows.Media.Brushes;
 
 namespace LoongEgg.Chart
 {
-    // TODO: make Figure not implement from ChartElement, but Figure itself is the base class.
-    //       so when Children property of Chart changed, it will not influence the figures.
     public abstract class Figure : ContentControl, IFigure, ICountOnUpdate
     {
         #region  abstract members

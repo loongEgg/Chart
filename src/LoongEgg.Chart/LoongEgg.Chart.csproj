@@ -61,6 +61,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomaticTick\AutomaticTick.cs" />
     <Compile Include="AxisElements\base\AxisElement.cs" />
     <Compile Include="AxisElements\base\AxisTicks.cs" />
     <Compile Include="AxisElements\AxisLines.cs" />
