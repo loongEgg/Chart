@@ -24,7 +24,7 @@ namespace LoongEgg.Chart
         private ObservableCollection<DataSeries> DataGroup = new ObservableCollection<DataSeries>();
 
         // TODO: use DataSeriesCollection to replace this
-        private DataSeries DataSeries = new DataSeries();
+        //private DataSeries DataSeries = new DataSeries();
 
         public RangeFilter Filter { get; private set; } = new RangeFilter(new Range(30, 60), new Range(-50, 50));
 
@@ -43,7 +43,7 @@ namespace LoongEgg.Chart
             SetCurrentValue(VerticalMajorTicksProperty, new double[] { -30, -20, -10, 0, 10, 20, 30 });
             SetCurrentValue(TimeRangeProperty, new Range(-30, 60));
             SetCurrentValue(ValueRangeProperty, new Range(-50, 50));
-            SetCurrentValue(SignalProperty, Signal.SinSignal);
+            //SetCurrentValue(SignalProperty, Signal.SinSignal);
 
             var signalCollection = new ObservableCollection<Signal>();
             signalCollection.Add(Signal.SinSignal);
@@ -313,39 +313,39 @@ namespace LoongEgg.Chart
             }
         }
         // TODO: use ObservableCollection<Signal> to replace
-        [Description("")]
-        public Signal Signal
-        {
-            get { return (Signal)GetValue(SignalProperty); }
-            set { SetValue(SignalProperty, value); }
-        }
-        /// <summary>
-        /// Dependency property of <see cref="Signal"/>
-        /// </summary>
-        public static readonly DependencyProperty SignalProperty = DependencyProperty.Register
-            (
-                nameof(Signal),
-                typeof(Signal),
-                typeof(TimerChart),
-                new PropertyMetadata(default(Signal), OnSignalChanged)
-            );
+        //[Description("")]
+        //public Signal Signal
+        //{
+        //    get { return (Signal)GetValue(SignalProperty); }
+        //    set { SetValue(SignalProperty, value); }
+        //}
+        ///// <summary>
+        ///// Dependency property of <see cref="Signal"/>
+        ///// </summary>
+        //public static readonly DependencyProperty SignalProperty = DependencyProperty.Register
+        //    (
+        //        nameof(Signal),
+        //        typeof(Signal),
+        //        typeof(TimerChart),
+        //        new PropertyMetadata(default(Signal), OnSignalChanged)
+        //    );
 
-        private static void OnSignalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var self = d as TimerChart;
-            if (self == null) return;
+        //private static void OnSignalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    var self = d as TimerChart;
+        //    if (self == null) return;
 
-            Signal signal;
+        //    Signal signal;
 
-            signal = e.OldValue as Signal;
-            if (signal != null)
-                signal.PropertyChanged -= self.Signal_PropertyChanged;
+        //    signal = e.OldValue as Signal;
+        //    if (signal != null)
+        //        signal.PropertyChanged -= self.Signal_PropertyChanged;
 
-            signal = e.NewValue as Signal;
-            if (signal != null)
-                signal.PropertyChanged += self.Signal_PropertyChanged;
+        //    signal = e.NewValue as Signal;
+        //    if (signal != null)
+        //        signal.PropertyChanged += self.Signal_PropertyChanged;
 
-        }
+        //}
 
         private void ResetFilterRange()
         {
@@ -353,29 +353,29 @@ namespace LoongEgg.Chart
             Filter.Yrange = ValueRange;
         }
 
-        private void Signal_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Signal.Value))
-                AddNewValue(Signal.Value);
-        }
+        //private void Signal_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    if (e.PropertyName == nameof(Signal.Value))
+        //        AddNewValue(Signal.Value);
+        //}
 
         #endregion
 
-        public void AddNewValue(double val)
-        {
-            DataSeries.Add(new Data.Point(Clock.TimeStamp, val));
-        }
+        //public void AddNewValue(double val)
+        //{
+        //    DataSeries.Add(new Data.Point(Clock.TimeStamp, val));
+        //}
 
-        public void ResetDataSeries()
-        {
-            if (Filter == null) throw new ArgumentNullException(nameof(Filter));
+        //public void ResetDataSeries()
+        //{
+        //    if (Filter == null) throw new ArgumentNullException(nameof(Filter));
 
-            Filter.Filtering(DataSeries.ToList());
-            var list = Filter.Result.Select(p => new Data.Point(p.X - TimeRange.Max, p.Y));
-            DataSeries.Reset(list);
-        }
+        //    Filter.Filtering(DataSeries.ToList());
+        //    var list = Filter.Result.Select(p => new Data.Point(p.X - TimeRange.Max, p.Y));
+        //    DataSeries.Reset(list);
+        //}
 
-        void OnFilterResultChanged() => DataSeries.Reset(Filter.Result);
+        //void OnFilterResultChanged() => DataSeries.Reset(Filter.Result);
 
         void OnAddChart(Chart chart)
         {
