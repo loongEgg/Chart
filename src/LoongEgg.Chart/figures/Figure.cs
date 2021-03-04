@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using LoongEgg.Data;
+using LoongEgg.Log;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 
@@ -13,12 +14,79 @@ namespace LoongEgg.Chart
 {
     // TODO: make Figure not implement from ChartElement, but Figure itself is the base class.
     //       so when Children property of Chart changed, it will not influence the figures.
-    public abstract class Figure : ChartElement, IFigure
+    public abstract class Figure : ContentControl, IFigure, ICountOnUpdate
     {
+        #region  abstract members
+
+        public abstract void Update();
+
+        #endregion
+
+        #region ui parts and properties
+        public Panel Root { get; internal set; } = new Canvas();
+
         public ValueToScreen HorizontalValueToScreen { get; internal set; } = new ValueToScreen((v) => v);
         public ValueToScreen VerticalValueToScreen { get; internal set; } = new ValueToScreen((v) => v);
 
+        #endregion
+
+        #region properties
+
+        public IChart Container
+        {
+            get { return _Container; }
+            set
+            {
+                if (_Container == value) return;
+                _Container = value;
+                OnContainerSet();
+            }
+        }
+        private IChart _Container;
+
+        public List<PointF> NormalizedPoints { get; protected set; } = new List<PointF>();
+        public int UpdateCount { get; protected set; } = 0;
+
         protected bool IsUpdating = false;
+
+        public bool InternalChange { get; set; } = true;
+        #endregion
+
+        #region ctor and initializing
+        public Figure()
+        {
+            Content = Root;
+            OnInitializing();
+            SizeChanged += (s, e) =>
+            {
+                ResetNormalizeAlgorithms();
+                Logger.Dbug($"{ this.GetType() }[{ this.GetHashCode() }] size changed");
+                Update();
+            };
+            Loaded += (s, e) =>
+            {
+                ResetNormalizeAlgorithms(); 
+                InternalChange = false;
+                Logger.Dbug($"{ this.GetType() }[{ this.GetHashCode() }] loaded");
+                Update();
+            };
+        }
+        
+        public void OnInitializing()
+        {
+            var temp = new DataSeries();
+            var random = new Random();
+
+            for (int i = 0; i < 200; i += 10)
+            {
+                temp.Add(new Data.Point(i, random.Next(-30, 30)));
+            }
+            SetCurrentValue(DataSeriesProperty, temp);
+        }
+
+        #endregion
+
+        protected static void OnParameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) => (d as Figure)?.Update();
 
         [Description("")]
         public Brush Stroke
@@ -36,7 +104,6 @@ namespace LoongEgg.Chart
                 typeof(Figure),
                 new PropertyMetadata(Brushes.Red, OnParameterChanged)
             );
-
 
         [Description("")]
         public float StrokeThickness
@@ -72,7 +139,7 @@ namespace LoongEgg.Chart
                 typeof(Figure),
                 new PropertyMetadata(default(DataSeries), OnDataSeriesChanged)
             );
-        
+
 
         private static void OnDataSeriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -81,7 +148,7 @@ namespace LoongEgg.Chart
             var collection = e.OldValue as DataSeries;
             if (collection != null)
             {
-                collection.CollectionChanged -= self.Collection_CollectionChanged;
+                collection.CollectionChanged -= self.DataSeries_CollectionChanged;
                 self.NormalizedPoints.Clear();
                 self.Update();
             }
@@ -96,23 +163,11 @@ namespace LoongEgg.Chart
                 }
                 self.InternalChange = false;
                 self.Update();
-                collection.CollectionChanged += self.Collection_CollectionChanged;
+                collection.CollectionChanged += self.DataSeries_CollectionChanged;
             }
         }
 
-        public override void OnInitializing()
-        {
-            var temp = new DataSeries();
-            var random = new Random();
-
-            for (int i = 0; i < 200; i += 10)
-            {
-                temp.Add(new Data.Point(i, random.Next(-30, 30)));
-            }
-            SetCurrentValue(DataSeriesProperty, temp);
-        }
-
-        private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void DataSeries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
             {
@@ -121,10 +176,10 @@ namespace LoongEgg.Chart
                 NormalizedPoints.RemoveRange(start, length);
                 Update();
             }
-            if(e.Action == NotifyCollectionChangedAction.Reset)
+            if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 NormalizedPoints.Clear();
-               
+
                 foreach (Data.Point p in DataSeries)
                 {
                     NormalizedPoints.Add(Normalize(p.X, p.Y));
@@ -141,26 +196,24 @@ namespace LoongEgg.Chart
             }
         }
 
-        public List<PointF> NormalizedPoints { get; protected set; } = new List<PointF>();
-
         public PointF Normalize(double x, double y)
             => new PointF(
                 (float)HorizontalValueToScreen(x),
                 (float)VerticalValueToScreen(y)
             );
 
-        public override void OnContainerSet()
+        public void OnContainerSet()
         {
-            if(Container != null)
+            if (Container != null)
             {
-                Container.ValueToScreenAlorithmsChanged += (s, e) => ResetNormalizeMethods();
+                ResetNormalizeAlgorithms();
             }
             ResetPlacement();
-            ResetNormalizeMethods();
+            ResetNormalizeAlgorithms();
             Update();
         }
 
-        public void ResetNormalizeMethods()
+        public void ResetNormalizeAlgorithms()
         {
             if (Container == null) return;
             if (Container.HorizontalValueToScreen != null)
@@ -178,9 +231,8 @@ namespace LoongEgg.Chart
                 NormalizedPoints.Add(Normalize(p.X, p.Y));
             }
         }
-
-
-        public override void ResetPlacement()
+        
+        public void ResetPlacement()
         {
             if (Container == null) return;
             (Parent as Panel)?.Children.Remove(this);
