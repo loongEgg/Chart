@@ -1,14 +1,12 @@
-﻿using System;
+﻿using LoongEgg.Core;
+using System;
 using System.Diagnostics;
 using System.Windows.Threading;
 
 namespace LoongEgg.Chart
 {
     public partial class Signal
-    {
-
-        private static Clock Clock = Clock.Singleton;
-
+    { 
         private static DispatcherTimer Timer = new DispatcherTimer();
 
         #region standard signal
@@ -98,5 +96,39 @@ namespace LoongEgg.Chart
 
         #endregion
 
+    }
+
+    /// <summary>
+    /// 信号源
+    /// </summary>
+    public partial class Signal : BindableObject, ISignal
+    {
+        public double Value
+        {
+            get { return _Value; }
+            set
+            {
+                _Value = value;
+                RaisePropertyChanged(nameof(Value));
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        private double _Value;
+
+        public string Label
+        {
+            get { return _Label; }
+            set { SetProperty(ref _Label, value); }
+        }
+        private string _Label = "[ label ]";
+
+        public string Unit
+        {
+            get { return _Unit; }
+            set { SetProperty(ref _Unit, value); }
+        }
+        private string _Unit = "-";
+
+        public event EventHandler ValueChanged;
     }
 }
