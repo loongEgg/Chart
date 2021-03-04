@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace LoongEgg.Chart.App
 {
@@ -16,13 +17,17 @@ namespace LoongEgg.Chart.App
             //chart3.SignalGroup = new System.Collections.ObjectModel.ObservableCollection<Signal> { Signal.SquareSignal, Signal.TriangleSignal };
         }
 
-        
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as MainViewModel;
-            if(vm != null)
+            var btn = e.OriginalSource as Button;
+            if (vm != null)
             {
-                vm.SignalGroups.RemoveAt(0);
+                if (vm.SignalGroups.Count >= 1 && btn.Content.ToString() == "Delete")
+                    vm.SignalGroups.RemoveAt(0);
+                else if (btn.Content.ToString() == "Add")
+                    vm.SignalGroups.Add(vm.SignalGroup_1);
             }
         }
     }
