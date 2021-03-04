@@ -11,11 +11,12 @@
     Height="450"
     mc:Ignorable="d">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <c:Chart
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--<c:Chart
             Margin="2"
             FontFamily="Consolas"
             BorderBrush="DarkGreen"
@@ -32,8 +33,10 @@
             <c:AxisLabels Placement="Right" />
             <c:AxisLabels Placement="Bottom" />
             <c:PolylineFigure />
-        </c:Chart>
+        </c:Chart>-->
 
-        <c:TimerChart Grid.Column="1" />
+        <c:TimerChart Grid.Row="0" />
+        <c:TimerChart Grid.Row="1" />
+        <c:TimerChart Grid.Row="2" />
     </Grid>
 </Window>

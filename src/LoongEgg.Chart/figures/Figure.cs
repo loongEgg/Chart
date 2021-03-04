@@ -18,6 +18,8 @@ namespace LoongEgg.Chart
         public ValueToScreen HorizontalValueToScreen { get; internal set; } = new ValueToScreen((v) => v);
         public ValueToScreen VerticalValueToScreen { get; internal set; } = new ValueToScreen((v) => v);
 
+        protected bool IsUpdating = false;
+
         [Description("")]
         public Brush Stroke
         {

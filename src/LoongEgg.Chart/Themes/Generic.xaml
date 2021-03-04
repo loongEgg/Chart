@@ -79,8 +79,6 @@
                         <local:AxisLines Placement="Top" />
                         <local:AxisLines Placement="Left" />
                         <local:AxisLines Placement="Right" />
-                        <local:AxisLabels Placement="Top" />
-                        <local:AxisLabels Placement="Left" />
                         <local:AxisLabels Placement="Right" />
                         <local:AxisLabels Placement="Bottom" />
                     </local:Chart>
