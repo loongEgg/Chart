@@ -58,7 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\LoongEgg.Chart\LoongEgg.Chart.csproj">
+    <ProjectReference Include="..\LoongEgg.Chart\LoongEgg.Chart.csproj">
       <Project>{4a2a4068-c9de-4301-80df-cb3bbef14291}</Project>
       <Name>LoongEgg.Chart</Name>
     </ProjectReference>

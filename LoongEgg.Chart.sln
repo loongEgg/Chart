@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoongEgg.Chart.App", "src\LoongEgg.Chart.App\LoongEgg.Chart.App.csproj", "{D8E47DCA-952A-4EB4-BE75-88A2044D0A69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoongEgg.Chart", "src\LoongEgg.Chart\LoongEgg.Chart.csproj", "{4A2A4068-C9DE-4301-80DF-CB3BBEF14291}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoongEgg.Chart.Test", "LoongEgg.Chart.Test\LoongEgg.Chart.Test.csproj", "{C45B15CD-8EEE-41CB-9728-088ADB0FA5C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoongEgg.Chart.Test", "src\LoongEgg.Chart.Test\LoongEgg.Chart.Test.csproj", "{C45B15CD-8EEE-41CB-9728-088ADB0FA5C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
