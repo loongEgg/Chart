@@ -23,9 +23,6 @@ namespace LoongEgg.Chart
         private List<DataSeries> DataSeriesCollection = new List<DataSeries>();
         private ObservableCollection<DataSeries> DataGroup = new ObservableCollection<DataSeries>();
 
-        // TODO: use DataSeriesCollection to replace this
-        //private DataSeries DataSeries = new DataSeries();
-
         public RangeFilter Filter { get; private set; } = new RangeFilter(new Range(30, 60), new Range(-50, 50));
 
         #region ctor and intializing
@@ -43,7 +40,6 @@ namespace LoongEgg.Chart
             SetCurrentValue(VerticalMajorTicksProperty, new double[] { -30, -20, -10, 0, 10, 20, 30 });
             SetCurrentValue(TimeRangeProperty, new Range(-30, 60));
             SetCurrentValue(ValueRangeProperty, new Range(-50, 50));
-            //SetCurrentValue(SignalProperty, Signal.SinSignal);
 
             var signalCollection = new ObservableCollection<Signal>();
             signalCollection.Add(Signal.SinSignal);
@@ -57,19 +53,17 @@ namespace LoongEgg.Chart
                 if (Clock.LastMinute - lastMinute >= 1)
                 {
                     lastMinute = Clock.LastMinute;
-                    // ResetDataSeries();
-                    //foreach (var dataSeries in DataSeriesCollection)
-                    //{
-                    //    var tmp = Filter.Filtering(dataSeries.ToList());
-                    //    dataSeries.Reset(tmp.Select(p => new Data.Point(p.X - 60, p.Y)));
-                    //}
 
                     foreach (var dataSeries in DataGroup)
                     {
                         var tmp = Filter.Filtering(dataSeries.ToList());
-                        dataSeries.Reset(tmp.Select(p => new Data.Point(p.X - 60, p.Y)));
+                        dataSeries.Reset(tmp.Select(p => new Data.Point(p.X - TimeRange.Max, p.Y)));
                     }
                 }
+            };
+            Loaded += (s, e) =>
+            {
+                ResetDataGroup(this, null, SignalGroup);
             };
         }
 
@@ -89,12 +83,6 @@ namespace LoongEgg.Chart
             else
             {
                 OnAddChart(PART_Chart);
-
-                var signalCollection = new ObservableCollection<Signal>();
-                signalCollection.Add(Signal.SinSignal);
-                signalCollection.Add(Signal.CosSignal);
-                signalCollection.Add(Signal.TriangleSignal);
-                this.SignalGroup = signalCollection;
             }
         }
         #endregion
@@ -259,47 +247,14 @@ namespace LoongEgg.Chart
             );
 
         private static void OnSignalGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            SignalGroup_CollectionChanged(d as TimerChart, e.OldValue as ObservableCollection<Signal>, e.NewValue as ObservableCollection<Signal>);
-            //var collection = e.OldValue as ObservableCollection<Signal>;
-            //if (collection != null)
-            //{
-            //    self.DataSeriesCollection.Clear();
-            //    if (self.PART_Chart != null && self.PART_Chart.Children != null)
-            //    {
-            //        foreach (var child in self.PART_Chart.Children)
-            //        {
-            //            if (child is PolylineFigure)
-            //                self.PART_Chart.Children.Remove(child);
-            //        }
-            //    }
-            //}
+            => ResetDataGroup(d as TimerChart, e.OldValue as ObservableCollection<Signal>, e.NewValue as ObservableCollection<Signal>);
 
-            //collection = e.NewValue as ObservableCollection<Signal>;
-            //if (collection != null)
-            //{
-            //    if (self.PART_Chart != null && self.PART_Chart.Children != null)
-            //    {
-            //        foreach (var signal in collection)
-            //        {
-            //            var dataSeries = new DataSeries();
-            //            self.PART_Chart.Children.Add(new PolylineFigure() { DataSeries = dataSeries });
-            //            self.DataSeriesCollection.Add(dataSeries);
-            //            signal.ValueChanged += (ss, ee) =>
-            //            {
-            //                dataSeries.Add(new Data.Point(Clock.TimeStamp, (ss as Signal).Value));
-            //            };
-            //        }
-            //    }
-            //}
-        }
-
-        private static void SignalGroup_CollectionChanged(TimerChart self, ObservableCollection<Signal> oldValue, ObservableCollection<Signal> newValue)
+        private static void ResetDataGroup(TimerChart self, ObservableCollection<Signal> oldValue, ObservableCollection<Signal> newValue)
         {
             if (self == null) return;
             self.DataGroup.Clear();
 
-            if(newValue != null)
+            if (newValue != null)
             {
                 foreach (var item in newValue)
                 {
@@ -312,40 +267,6 @@ namespace LoongEgg.Chart
                 }
             }
         }
-        // TODO: use ObservableCollection<Signal> to replace
-        //[Description("")]
-        //public Signal Signal
-        //{
-        //    get { return (Signal)GetValue(SignalProperty); }
-        //    set { SetValue(SignalProperty, value); }
-        //}
-        ///// <summary>
-        ///// Dependency property of <see cref="Signal"/>
-        ///// </summary>
-        //public static readonly DependencyProperty SignalProperty = DependencyProperty.Register
-        //    (
-        //        nameof(Signal),
-        //        typeof(Signal),
-        //        typeof(TimerChart),
-        //        new PropertyMetadata(default(Signal), OnSignalChanged)
-        //    );
-
-        //private static void OnSignalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    var self = d as TimerChart;
-        //    if (self == null) return;
-
-        //    Signal signal;
-
-        //    signal = e.OldValue as Signal;
-        //    if (signal != null)
-        //        signal.PropertyChanged -= self.Signal_PropertyChanged;
-
-        //    signal = e.NewValue as Signal;
-        //    if (signal != null)
-        //        signal.PropertyChanged += self.Signal_PropertyChanged;
-
-        //}
 
         private void ResetFilterRange()
         {
@@ -353,29 +274,7 @@ namespace LoongEgg.Chart
             Filter.Yrange = ValueRange;
         }
 
-        //private void Signal_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    if (e.PropertyName == nameof(Signal.Value))
-        //        AddNewValue(Signal.Value);
-        //}
-
         #endregion
-
-        //public void AddNewValue(double val)
-        //{
-        //    DataSeries.Add(new Data.Point(Clock.TimeStamp, val));
-        //}
-
-        //public void ResetDataSeries()
-        //{
-        //    if (Filter == null) throw new ArgumentNullException(nameof(Filter));
-
-        //    Filter.Filtering(DataSeries.ToList());
-        //    var list = Filter.Result.Select(p => new Data.Point(p.X - TimeRange.Max, p.Y));
-        //    DataSeries.Reset(list);
-        //}
-
-        //void OnFilterResultChanged() => DataSeries.Reset(Filter.Result);
 
         void OnAddChart(Chart chart)
         {
@@ -395,9 +294,6 @@ namespace LoongEgg.Chart
             chart.SetBinding(Chart.VerticalMajorTicksProperty, binding);
 
             chart.DataGroup = this.DataGroup;
-            //PolylineFigure figure = new PolylineFigure();
-            //figure.DataSeries = this.DataSeries;
-            //chart.Children.Add(figure);
         }
     }
 }
