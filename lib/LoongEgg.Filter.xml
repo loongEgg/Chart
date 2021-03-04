@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LoongEgg.Filter</name>
+    </assembly>
+    <members>
+        <member name="T:LoongEgg.Filter.IFilter">
+            <summary>
+            滤波器接口
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Filter.IFilter.Result">
+            <summary>
+            滤波结果
+            </summary>
+        </member>
+        <member name="M:LoongEgg.Filter.IFilter.FilteringAndMonitor(System.Collections.Generic.List{LoongEgg.Data.Point})">
+            <summary>
+            滤波并检测结果, 发生数目变化时会Raise<see cref="E:LoongEgg.Filter.IFilter.ResultChanged"/>
+            </summary>
+            <param name="points">待滤波的原始数据点</param>
+        </member>
+        <member name="M:LoongEgg.Filter.IFilter.Filtering(System.Collections.Generic.List{LoongEgg.Data.Point})">
+            <summary>
+            滤波
+            </summary>
+            <param name="points">原始数据点</param>
+            <returns>滤波结果</returns>
+        </member>
+        <member name="E:LoongEgg.Filter.IFilter.ResultChanged">
+            <summary>
+            raised when <see cref="P:LoongEgg.Filter.IFilter.Result"/> changed 
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Filter.Filter">
+            <summary>
+            滤波器基类
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Filter.RangeFilter">
+            <summary>
+            范围滤波器
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Filter.RangeFilter.Xrange">
+            <summary>
+            X轴范围
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Filter.RangeFilter.Yrange">
+            <summary>
+            Y轴范围
+            </summary>
+        </member>
+    </members>
+</doc>

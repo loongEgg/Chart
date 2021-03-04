@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using LoongEgg.Data;
+using LoongEgg.Filter;
 
 namespace LoongEgg.Chart
 {

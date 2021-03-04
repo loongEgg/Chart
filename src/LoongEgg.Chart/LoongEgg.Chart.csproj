@@ -41,6 +41,9 @@
     <Reference Include="LoongEgg.Data">
       <HintPath>E:\project\LoongEgg.Data\LoongEgg.Data\bin\Debug\net45\LoongEgg.Data.dll</HintPath>
     </Reference>
+    <Reference Include="LoongEgg.Filter">
+      <HintPath>..\..\lib\LoongEgg.Filter.dll</HintPath>
+    </Reference>
     <Reference Include="LoongEgg.Log">
       <HintPath>E:\project\LoongEgg.Log\LoongEgg.Log\bin\Debug\net45\LoongEgg.Log.dll</HintPath>
     </Reference>
@@ -78,9 +81,6 @@
     <Compile Include="Enums\TickLevels.cs" />
     <Compile Include="Charts\TimerChart.cs" />
     <Compile Include="Contracts\ISignal.cs" />
-    <Compile Include="Contracts\IFilter.cs" />
-    <Compile Include="Filters\Filter.cs" />
-    <Compile Include="Filters\RangeFilter.cs" />
     <Compile Include="Signal\Signal.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
