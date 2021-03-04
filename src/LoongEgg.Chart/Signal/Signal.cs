@@ -3,6 +3,7 @@ using LoongEgg.Core;
 
 namespace LoongEgg.Chart
 {
+    // TODO: remove to LoongEgg.Data
     public partial class Signal : BindableObject, ISignal
     {
         public double Value

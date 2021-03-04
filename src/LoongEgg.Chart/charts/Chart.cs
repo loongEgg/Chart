@@ -165,7 +165,7 @@ namespace LoongEgg.Chart
 #endif 
             if (DataGroup != null)
             {
-                OnDataGroupReset(this, null, DataGroup);
+                ResetOnDataGroupChanged(this, null, DataGroup);
             }
         }
 
@@ -280,30 +280,35 @@ namespace LoongEgg.Chart
             var self = d as Chart;
             if (self == null) return;
 
-            OnDataGroupReset(
+            ResetOnDataGroupChanged(
                 self,
                 e.OldValue as ObservableCollection<DataSeries>,
                 e.NewValue as ObservableCollection<DataSeries>);
         }
 
-        private static void OnDataGroupReset(Chart self, ObservableCollection<DataSeries> oldCollection, ObservableCollection<DataSeries> newCollection)
+
+
+        private static void ResetOnDataGroupChanged(Chart self, ObservableCollection<DataSeries> oldValue, ObservableCollection<DataSeries> newValue)
         {
             if (self.PART_FigureContainer == null || self.PART_FigureContainer.Children == null) return;
             self.PART_FigureContainer.Children.Clear();
 
-            if (oldCollection != null)
+            if (oldValue != null)
             {
-                oldCollection.CollectionChanged += self.DataGroup_CollectionChanged;
+                oldValue.CollectionChanged += self.DataGroup_CollectionChanged;
             }
-            if (newCollection == null) return;
-            foreach (var item in newCollection)
+            if (newValue == null) return;
+            foreach (var item in newValue)
             {
                 var id = self.PART_FigureContainer.Children.Count;
-                var stroke = Brushes.DarkGreen;
+                var stroke = self.Foreground; /* default assing the stroke to foreground */
+
+                /* if has default brushes use it as the item add */
                 if (id < Chart.DefaultBrushes.Count)
                 {
                     stroke = Chart.DefaultBrushes[id];
                 }
+
                 var figure = new PolylineFigure() { DataSeries = item, Stroke = stroke };
                 figure.Container = self;
             }

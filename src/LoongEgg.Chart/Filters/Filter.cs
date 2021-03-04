@@ -4,6 +4,7 @@ using Point = LoongEgg.Data.Point;
 
 namespace LoongEgg.Chart
 {
+    // TODO: remove to LoongEgg.Filter
     public abstract class Filter : IFilter
     {
         public List<Point> Result { get; protected set; } = new List<Point>();
