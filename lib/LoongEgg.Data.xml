@@ -4,6 +4,11 @@
         <name>LoongEgg.Data</name>
     </assembly>
     <members>
+        <member name="T:LoongEgg.Data.DataGroup">
+            <summary>
+            数据组(系列的集合)
+            </summary>
+        </member>
         <member name="T:LoongEgg.Data.DataSeries">
             <summary>
             数据序列
@@ -35,9 +40,19 @@
             </summary>
             <param name="points"></param>
         </member>
-        <member name="T:LoongEgg.Data.DataSeriesCollection">
+        <member name="P:LoongEgg.Data.ISignal.Value">
             <summary>
-            数据系列的集合
+            当前的数值
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.ISignal.Label">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.ISignal.Unit">
+            <summary>
+            单位
             </summary>
         </member>
         <member name="T:LoongEgg.Data.Point">
@@ -65,6 +80,11 @@
         <member name="T:LoongEgg.Data.RangeConverter">
             <summary>
             Converter for <see cref="T:LoongEgg.Data.Range"/>
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Data.Signal">
+            <summary>
+            信号源
             </summary>
         </member>
     </members>
