@@ -37,7 +37,7 @@ namespace LoongEgg.Chart
 
         #region events
 
-        public event EventHandler ValueToScreenMethodChanged;
+        public event EventHandler ValueToScreenAlorithmsChanged;
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace LoongEgg.Chart
             {
                 _HorizontalValueToScreen = value;
                 if (value != null)
-                    ValueToScreenMethodChanged?.Invoke(this, EventArgs.Empty);
+                    ValueToScreenAlorithmsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private ValueToScreen _HorizontalValueToScreen;
@@ -79,12 +79,12 @@ namespace LoongEgg.Chart
             {
                 _VerticalValueToScreen = value;
                 if (value != null)
-                    ValueToScreenMethodChanged?.Invoke(this, EventArgs.Empty);
+                    ValueToScreenAlorithmsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private ValueToScreen _VerticalValueToScreen;
 
-        public void ResetValueToScreenMethod()
+        public void ResetValueToScreenAlorithms()
         {
             if (HorizontalRange == null || VerticalRange == null) return;
             if (HorizontalRange.Distance <= 0 || VerticalRange.Distance <= 0) return;
@@ -116,20 +116,9 @@ namespace LoongEgg.Chart
 
             Loaded += (s, e) =>
             {
-                if (Children != null)
-                {
-                    foreach (ChartElement item in Children)
-                    {
-                        if (item != null)
-                        {
-                            item.Container = this;
-                            item.ResetPlacement();
-                            item.Update();
-                        }
-                    }
-                }
-
-                PART_Center.SizeChanged += (ss, ee) => ResetValueToScreenMethod();
+                ResetOnChildrenChanged(this, Children, Children);
+                ResetOnDataGroupChanged(this, DataGroup, DataGroup);
+                PART_Center.SizeChanged += (ss, ee) => ResetValueToScreenAlorithms();
             };
         }
 
@@ -162,16 +151,197 @@ namespace LoongEgg.Chart
                 || PART_FigureBorder == null
                 || PART_FigureContainer == null)
                 Debugger.Break();
-#endif 
-            if (DataGroup != null)
-            {
-                ResetOnDataGroupChanged(this, null, DataGroup);
-            }
+#endif           
         }
 
         #endregion
 
         #region dependency properties and change handler
+         
+        /// <summary>
+        /// 
+        /// </summary>
+        [Description("")]
+        public ObservableCollection<object> Children
+        {
+            get { return (ObservableCollection<object>)GetValue(ChildrenProperty); }
+            set { SetValue(ChildrenProperty, value); }
+        }
+        /// <summary>
+        /// dependency property of <see ref="Children"/>
+        /// </summary>
+        public static readonly DependencyProperty ChildrenProperty =
+            DependencyProperty.Register(
+                nameof(Children),
+                typeof(ObservableCollection<object>),
+                typeof(Chart),
+                new PropertyMetadata(
+                    null,
+                    (s, e) =>
+                    {
+                        ResetOnChildrenChanged(s as Chart, e.OldValue as ObservableCollection<object>, e.NewValue as ObservableCollection<object>);
+                    }));
+
+        private static void ResetOnChildrenChanged(Chart self, ObservableCollection<object> oldValue, ObservableCollection<object> newValue)
+        {
+            if (self == null) return;
+            if (oldValue != null)
+            {
+                foreach (ChartElement item in oldValue)
+                {
+                    if (item != null)
+                    {
+                        (item.Parent as Panel)?.Children.Remove(item);
+                        item.Container = null;
+                    }
+                }
+                oldValue.CollectionChanged -= self.Children_CollectionChanged;
+            }
+            if (newValue != null)
+            {
+                foreach (ChartElement item in newValue)
+                {
+                    if (item != null) item.Container = self;
+                    item.ResetPlacement();
+                    item.Update();
+                    Logger.Dbug($"{item.GetType()} add", true);
+                }
+                newValue.CollectionChanged += self.Children_CollectionChanged;
+            }
+        }
+
+        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var oldItems = e.OldItems;
+            var newItems = e.NewItems;
+            if (oldItems != null)
+            {
+                foreach (ChartElement item in oldItems)
+                {
+                    if (item != null)
+                    {
+                        (item.Parent as Panel)?.Children.Remove(item);
+                        item.Container = null;
+                    }
+                }
+            }
+            if (newItems != null)
+            {
+                foreach (ChartElement item in newItems)
+                {
+                    AddChild(this, item);
+                }
+            }
+        }
+
+        /// <summary>
+        /// add <see cref="ChartElement"/> to a <see cref="Chart"/>
+        /// </summary>
+        /// <param name="self">the chart to contain the element</param>
+        /// <param name="element">the element should be added the chart</param>
+        private static void AddChild(Chart self, ChartElement element)
+        {
+            if (element == null || self == null) return;
+            element.Container = self;
+            element.ResetPlacement();
+            element.Update();
+            Logger.Dbug($"{element.GetType()}[{element.GetHashCode()}] added in Chart[{self.GetHashCode()}]");
+        }
+
+        /// <summary>
+        /// remove <see cref="ChartElement"/> from a <see cref="Chart"/>
+        /// </summary>
+        /// <param name="self">the chart contain the element</param>
+        /// <param name="element">the element to be removed</param>
+        private static void RemoveChild(Chart self,ChartElement element)
+        {
+            if (element == null || self == null) return;
+            (element.Parent as Panel)?.Children.Remove(element);
+            element.Container = null;
+            Logger.Dbug($"{element.GetType()}[{element.GetHashCode()}] removed from Chart[{self.GetHashCode()}]");
+        }
+
+        /// <summary>
+        /// the DataSeries collection should be paint to Figures
+        /// </summary>
+        [Description("the DataSeries collection should be paint to Figures")]
+        public ObservableCollection<DataSeries> DataGroup
+        {
+            get { return (ObservableCollection<DataSeries>)GetValue(DataGroupProperty); }
+            set { SetValue(DataGroupProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="DataGroup"/>
+        /// </summary>
+        public static readonly DependencyProperty DataGroupProperty = DependencyProperty.Register
+            (
+                nameof(DataGroup),
+                typeof(ObservableCollection<DataSeries>),
+                typeof(Chart),
+                new PropertyMetadata(default(ObservableCollection<DataSeries>), OnDataGroupChanged)
+            );
+
+        private static void OnDataGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = d as Chart;
+            if (self == null) return;
+
+            ResetOnDataGroupChanged(
+                self,
+                e.OldValue as ObservableCollection<DataSeries>,
+                e.NewValue as ObservableCollection<DataSeries>);
+        }
+
+        private static void ResetOnDataGroupChanged(Chart self, ObservableCollection<DataSeries> oldValue, ObservableCollection<DataSeries> newValue)
+        {
+            if (self.PART_FigureContainer == null || self.PART_FigureContainer.Children == null) return;
+            self.PART_FigureContainer.Children.Clear();
+
+            if (oldValue != null)
+            {
+                oldValue.CollectionChanged -= self.DataGroup_CollectionChanged;
+            }
+            if (newValue != null)
+            {
+                foreach (var item in newValue)
+                {
+                    var id = self.PART_FigureContainer.Children.Count;
+                    var stroke = self.Foreground; /* assign to foreground the stroke */
+
+                    /* if has default brushes use it as the item add */
+                    if (id < Chart.DefaultBrushes.Count)
+                    {
+                        stroke = Chart.DefaultBrushes[id];
+                    }
+
+                    var figure = new PolylineFigure() { DataSeries = item, Stroke = stroke };
+                    figure.Container = self;
+                }
+            }
+        }
+
+        private void DataGroup_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                int start = e.OldStartingIndex;
+                int length = e.OldItems.Count;
+                PART_FigureContainer?.Children.RemoveRange(start, length);
+            }
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                PART_FigureContainer?.Children.Clear();
+            }
+            if (e.NewItems != null)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    if (item is Figure)
+                        PART_FigureContainer?.Children.Add(item as Figure);
+                }
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -210,132 +380,6 @@ namespace LoongEgg.Chart
                 typeof(IEnumerable<double>),
                 typeof(Chart),
                 new PropertyMetadata(default(IEnumerable<double>)));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Description("")]
-        public ObservableCollection<object> Children
-        {
-            get { return (ObservableCollection<object>)GetValue(ChildrenProperty); }
-            set { SetValue(ChildrenProperty, value); }
-        }
-        /// <summary>
-        /// dependency property of <see ref="Children"/>
-        /// </summary>
-        public static readonly DependencyProperty ChildrenProperty =
-            DependencyProperty.Register(
-                nameof(Children),
-                typeof(ObservableCollection<object>),
-                typeof(Chart),
-                new PropertyMetadata(
-                    null,
-                    (s, e) =>
-                    {
-                        var self = s as Chart;
-                        if (self == null) return;
-                        var collection = e.NewValue as ObservableCollection<object>;
-                        if (collection != null)
-                        {
-                            foreach (ChartElement item in collection)
-                            {
-                                if (item != null) item.Container = self;
-                                Logger.Dbug($"{item.GetType()} add", true);
-                            }
-                            collection.CollectionChanged += self.Child_CollectionChanged;
-                        }
-                        // TODO:FIX
-                        //collection = e.OldValue as ObservableCollection<object>;
-                        //if (collection != null && self != null)
-                        //{
-                        //    foreach (var item in collection)
-                        //    {
-                        //        (item as IChartElement).RemoveContainer();
-                        //        Logger.Dbug($"{item.GetType()} removed", true);
-                        //    }
-                        //    collection.CollectionChanged -= self.Collection_CollectionChanged;
-                        //}
-                    }));
-
-
-        [Description("")]
-        public ObservableCollection<DataSeries> DataGroup
-        {
-            get { return (ObservableCollection<DataSeries>)GetValue(DataGroupProperty); }
-            set { SetValue(DataGroupProperty, value); }
-        }
-        /// <summary>
-        /// Dependency property of <see cref="DataGroup"/>
-        /// </summary>
-        public static readonly DependencyProperty DataGroupProperty = DependencyProperty.Register
-            (
-                nameof(DataGroup),
-                typeof(ObservableCollection<DataSeries>),
-                typeof(Chart),
-                new PropertyMetadata(default(ObservableCollection<DataSeries>), OnDataGroupChanged)
-            );
-
-        private static void OnDataGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var self = d as Chart;
-            if (self == null) return;
-
-            ResetOnDataGroupChanged(
-                self,
-                e.OldValue as ObservableCollection<DataSeries>,
-                e.NewValue as ObservableCollection<DataSeries>);
-        }
-
-
-
-        private static void ResetOnDataGroupChanged(Chart self, ObservableCollection<DataSeries> oldValue, ObservableCollection<DataSeries> newValue)
-        {
-            if (self.PART_FigureContainer == null || self.PART_FigureContainer.Children == null) return;
-            self.PART_FigureContainer.Children.Clear();
-
-            if (oldValue != null)
-            {
-                oldValue.CollectionChanged += self.DataGroup_CollectionChanged;
-            }
-            if (newValue == null) return;
-            foreach (var item in newValue)
-            {
-                var id = self.PART_FigureContainer.Children.Count;
-                var stroke = self.Foreground; /* default assing the stroke to foreground */
-
-                /* if has default brushes use it as the item add */
-                if (id < Chart.DefaultBrushes.Count)
-                {
-                    stroke = Chart.DefaultBrushes[id];
-                }
-
-                var figure = new PolylineFigure() { DataSeries = item, Stroke = stroke };
-                figure.Container = self;
-            }
-        }
-
-        private void DataGroup_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
-            {
-                int start = e.OldStartingIndex;
-                int length = e.OldItems.Count;
-                PART_FigureContainer?.Children.RemoveRange(start, length);
-            }
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                PART_FigureContainer?.Children.Clear();
-            }
-            if (e.NewItems != null)
-            {
-                foreach (var item in e.NewItems)
-                {
-                    if (item is Figure)
-                        PART_FigureContainer?.Children.Add(item as Figure);
-                }
-            }
-        }
-
 
         /// <summary>
         /// 
@@ -416,28 +460,7 @@ namespace LoongEgg.Chart
 
 
         private static void OnRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => (d as IChart)?.ResetValueToScreenMethod();
-
-        void Child_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            var collection = e.NewItems;
-            if (collection != null)
-            {
-                foreach (ChartElement item in collection)
-                {
-                    if (item != null) item.Container = this;
-                }
-            }
-            // TODO: FIX
-            //collection = e.OldItems;
-            //if (collection != null)
-            //{
-            //    foreach (var item in collection)
-            //    {
-            //        (item as IChartElement)?.RemoveContainer();
-            //    }
-            //}
-        }
+            => (d as IChart)?.ResetValueToScreenAlorithms();
 
         #endregion
 

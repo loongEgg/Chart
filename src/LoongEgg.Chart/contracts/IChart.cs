@@ -84,12 +84,11 @@ namespace LoongEgg.Chart
         /// <summary>
         /// 投影算法改变时
         /// </summary>
-        event EventHandler ValueToScreenMethodChanged;
-
+        event EventHandler ValueToScreenAlorithmsChanged;
         /// <summary>
         /// 重置<see cref="HorizontalValueToScreen"/>和<see cref="VerticalValueToScreen"/>
         /// </summary>
-        void ResetValueToScreenMethod();
+        void ResetValueToScreenAlorithms();
     }
 
    

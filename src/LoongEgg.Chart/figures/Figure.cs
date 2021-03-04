@@ -153,7 +153,7 @@ namespace LoongEgg.Chart
         {
             if(Container != null)
             {
-                Container.ValueToScreenMethodChanged += (s, e) => ResetNormalizeMethods();
+                Container.ValueToScreenAlorithmsChanged += (s, e) => ResetNormalizeMethods();
             }
             ResetPlacement();
             ResetNormalizeMethods();

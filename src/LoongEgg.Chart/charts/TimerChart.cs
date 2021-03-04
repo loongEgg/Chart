@@ -16,7 +16,6 @@ namespace LoongEgg.Chart
     {
         private static Clock Clock = Clock.Singleton;
 
-        // TODO: add/remove dynamic as DataSeriesCollection.CollectionChanged or ObservableCollection<Signal>
         public Chart PART_Chart { get; internal set; }
 
         private List<PolylineFigure> Figures = new List<PolylineFigure>();
