@@ -42,17 +42,6 @@ namespace LoongEgg.Chart
             SetCurrentValue(TimeRangeProperty, new Range(-30, 60));
             SetCurrentValue(ValueRangeProperty, new Range(-10, 10));
 
-            if(SignalGroup == null)
-            {
-                SignalGroup = new ObservableCollection<Signal>();
-            }
-
-            //var signalCollection = new ObservableCollection<Signal>();
-            //signalCollection.Add(Signal.SinSignal);
-            //signalCollection.Add(Signal.CosSignal);
-            //signalCollection.Add(Signal.SquareSignal);
-            //SetCurrentValue(SignalGroupProperty, signalCollection);
-
             int lastMinute = Clock.LastMinute;
             Clock.Tick += (s, e) =>
             {
@@ -209,7 +198,6 @@ namespace LoongEgg.Chart
             );
 
         private bool IsSettingValueRangeTicks = false;
-        // TODO: Fix auto fix algorithms
         /// <summary>
         /// 使用自适应算法重置刻度
         /// </summary>

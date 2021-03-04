@@ -10,33 +10,25 @@
     Width="1200"
     Height="450"
     mc:Ignorable="d">
-    <Grid>
+    <Grid d:DataContext="{x:Static local:MainViewModel.DesignInstance}">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <!--<c:Chart
-            Margin="2"
-            FontFamily="Consolas"
-            BorderBrush="DarkGreen"
-            BorderThickness="2"
-            FontSize="12"
-            Foreground="DarkGreen">
-            <c:GridLines StrokeThickness="0.5" />
-            <c:AxisLines Placement="Bottom" />
-            <c:AxisLines Placement="Top" />
-            <c:AxisLines Placement="Left" />
-            <c:AxisLines Placement="Right" />
-            <c:AxisLabels Placement="Top" />
-            <c:AxisLabels Placement="Left" />
-            <c:AxisLabels Placement="Right" />
-            <c:AxisLabels Placement="Bottom" />
-            <c:PolylineFigure />
-        </c:Chart>-->
 
-        <c:TimerChart x:Name="chart1" Grid.Row="0" />
-        <c:TimerChart x:Name="chart2" Grid.Row="1" />
-        <c:TimerChart x:Name="chart3" Grid.Row="2" />
+        <c:TimerChart
+            x:Name="chart1"
+            Grid.Row="0"
+            SignalGroup="{Binding SignalGroup_1}" />
+        <c:TimerChart
+            x:Name="chart2"
+            Grid.Row="1"
+            SignalGroup="{Binding SignalGroup_2}" />
+        <c:TimerChart
+            x:Name="chart3"
+            Grid.Row="2"
+            SignalGroup="{Binding SignalGroup_3}" />
+
     </Grid>
 </Window>

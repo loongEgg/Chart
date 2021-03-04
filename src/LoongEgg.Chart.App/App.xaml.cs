@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using LoongEgg.Log;
 
 namespace LoongEgg.Chart.App
@@ -18,7 +12,7 @@ namespace LoongEgg.Chart.App
         {
             base.OnStartup(e);
             Logger.Enable(Loggers.Console);
-            this.MainWindow = new MainWindow();
+            this.MainWindow = new MainWindow() { DataContext = MainViewModel.DesignInstance };
             this.MainWindow.Show();
         }
     }
