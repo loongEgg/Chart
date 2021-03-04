@@ -8,12 +8,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1200"
-    Height="450"
+    Height="700"
     mc:Ignorable="d">
     <Grid d:DataContext="{x:Static local:MainViewModel.DesignInstance}">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="150" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -21,14 +20,27 @@
             x:Name="chart1"
             Grid.Row="0"
             SignalGroup="{Binding SignalGroup_1}" />
-        <c:TimerChart
-            x:Name="chart2"
-            Grid.Row="1"
-            SignalGroup="{Binding SignalGroup_2}" />
-        <c:TimerChart
-            x:Name="chart3"
-            Grid.Row="2"
-            SignalGroup="{Binding SignalGroup_3}" />
 
+        <ListBox
+            Grid.Row="1"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            ItemsSource="{Binding SignalGroups}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid VerticalAlignment="Stretch">
+                        <c:TimerChart
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            SignalGroup="{Binding}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
