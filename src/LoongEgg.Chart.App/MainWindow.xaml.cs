@@ -15,5 +15,15 @@ namespace LoongEgg.Chart.App
             //chart2.SignalGroup = new System.Collections.ObjectModel.ObservableCollection<Signal> { Signal.SinSignal };
             //chart3.SignalGroup = new System.Collections.ObjectModel.ObservableCollection<Signal> { Signal.SquareSignal, Signal.TriangleSignal };
         }
+
+        
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainViewModel;
+            if(vm != null)
+            {
+                vm.SignalGroups.RemoveAt(0);
+            }
+        }
     }
 }

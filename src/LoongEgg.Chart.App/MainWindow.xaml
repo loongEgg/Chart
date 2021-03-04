@@ -13,6 +13,7 @@
     <Grid d:DataContext="{x:Static local:MainViewModel.DesignInstance}">
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
+            <RowDefinition Height="20"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -21,8 +22,10 @@
             Grid.Row="0"
             SignalGroup="{Binding SignalGroup_1}" />
 
+        <Button Grid.Row="1" Width="120" Click="Button_Click"/>
+
         <ListBox
-            Grid.Row="1"
+            Grid.Row="2"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Stretch"
             ItemsSource="{Binding SignalGroups}">
