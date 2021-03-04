@@ -7,19 +7,21 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Markup;
 using LoongEgg.Data;
 
 namespace LoongEgg.Chart
 {
     [TemplatePart(Name = nameof(PART_Chart), Type = typeof(Chart))]
+    [ContentProperty(nameof(SignalGroup))]
     public class TimerChart : Control, ITimerChart
     {
         private static Clock Clock = Clock.Singleton;
 
         public Chart PART_Chart { get; internal set; }
 
-        private List<PolylineFigure> Figures = new List<PolylineFigure>();
-        private List<DataSeries> DataSeriesCollection = new List<DataSeries>();
+        public bool InternalChanging { get; set; } = false;
+
         private ObservableCollection<DataSeries> DataGroup = new ObservableCollection<DataSeries>();
 
         public RangeFilter Filter { get; private set; } = new RangeFilter(new Range(30, 60), new Range(-50, 50));
@@ -36,15 +38,20 @@ namespace LoongEgg.Chart
                 ticks.Add(i);
             SetCurrentValue(HorizontalMinorTicksProperty, ticks);
 
-            SetCurrentValue(VerticalMajorTicksProperty, new double[] { -30, -20, -10, 0, 10, 20, 30 });
+            SetCurrentValue(VerticalMajorTicksProperty, new double[] { -10, -5, 0, 5, 10 });
             SetCurrentValue(TimeRangeProperty, new Range(-30, 60));
-            SetCurrentValue(ValueRangeProperty, new Range(-50, 50));
+            SetCurrentValue(ValueRangeProperty, new Range(-10, 10));
 
-            var signalCollection = new ObservableCollection<Signal>();
-            signalCollection.Add(Signal.SinSignal);
-            signalCollection.Add(Signal.CosSignal);
-            signalCollection.Add(Signal.SquareSignal);
-            SetCurrentValue(SignalGroupProperty, signalCollection);
+            if(SignalGroup == null)
+            {
+                SignalGroup = new ObservableCollection<Signal>();
+            }
+
+            //var signalCollection = new ObservableCollection<Signal>();
+            //signalCollection.Add(Signal.SinSignal);
+            //signalCollection.Add(Signal.CosSignal);
+            //signalCollection.Add(Signal.SquareSignal);
+            //SetCurrentValue(SignalGroupProperty, signalCollection);
 
             int lastMinute = Clock.LastMinute;
             Clock.Tick += (s, e) =>
@@ -118,7 +125,7 @@ namespace LoongEgg.Chart
                 nameof(ValueRange),
                 typeof(Range),
                 typeof(TimerChart),
-                new PropertyMetadata(new Range(-100, 100), OnRangeChanged)
+                new PropertyMetadata(null, OnRangeChanged)
             );
 
         [Description("")]
@@ -146,7 +153,7 @@ namespace LoongEgg.Chart
             {
                 self.ResetFilterRange();
                 if (self.AutoFixTicks)
-                    self.ResetAutoFixTicks();
+                    self.ResetAutoFixValueRangeTicks();
             }
         }
 
@@ -201,12 +208,16 @@ namespace LoongEgg.Chart
                 new PropertyMetadata(default(IEnumerable<double>))
             );
 
+        private bool IsSettingValueRangeTicks = false;
         // TODO: Fix auto fix algorithms
         /// <summary>
         /// 使用自适应算法重置刻度
         /// </summary>
-        private void ResetAutoFixTicks()
+        private void ResetAutoFixValueRangeTicks()
         {
+
+            #region horizontal axis not set now
+
             List<double> ticks;
 
             ticks = new List<double>();
@@ -219,10 +230,41 @@ namespace LoongEgg.Chart
                 ticks.Add(i);
             HorizontalMinorTicks = ticks;
 
-            ticks = new List<double>();
-            for (double i = ValueRange.Min; i <= ValueRange.Max; i += 10)
-                ticks.Add(i);
-            VerticalMajorTicks = ticks;
+            #endregion
+
+            if (IsSettingValueRangeTicks == true) return;
+            IsSettingValueRangeTicks = true;
+
+            if (PART_Chart != null && PART_Chart.PART_FigureContainer != null)
+            {
+                foreach (Figure child in PART_Chart.PART_FigureContainer.Children)
+                {
+                    if (child != null)
+                        child.InternalChange = true;
+                }
+            }
+
+            Range verticalRange;
+            double[] verticalMajorTicks;
+
+            AutomaticTick.RangeTicksFix(ValueRange, 8, out verticalRange, out verticalMajorTicks);
+            ValueRange = verticalRange;
+            VerticalMajorTicks = verticalMajorTicks;
+
+            if (PART_Chart != null && PART_Chart.PART_FigureContainer.Children != null)
+            {
+                foreach (Figure child in PART_Chart.PART_FigureContainer.Children)
+                {
+                    if (child != null)
+                    {
+                        child.ResetNormalizeAlgorithms();
+                        child.InternalChange = false;
+                        child.Update();
+                    }
+                }
+            }
+
+            IsSettingValueRangeTicks = false;
         }
 
 
@@ -261,6 +303,17 @@ namespace LoongEgg.Chart
                     item.ValueChanged += (s, e) =>
                     {
                         dataSeries.Add(new Data.Point(Clock.TimeStamp, item.Value));
+
+                        if (item.Value > self.ValueRange.Max)
+                        {
+                            var min = self.ValueRange.Min;
+                            self.ValueRange = new Range(min, item.Value);
+                        }
+                        else if (item.Value < self.ValueRange.Min)
+                        {
+                            var max = self.ValueRange.Max;
+                            self.ValueRange = new Range(item.Value, max);
+                        }
                     };
                     self.DataGroup.Add(dataSeries);
                 }

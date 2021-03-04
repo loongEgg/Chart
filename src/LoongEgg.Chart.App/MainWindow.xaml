@@ -35,8 +35,8 @@
             <c:PolylineFigure />
         </c:Chart>-->
 
-        <c:TimerChart Grid.Row="0" />
-        <c:TimerChart Grid.Row="1" />
-        <c:TimerChart Grid.Row="2" />
+        <c:TimerChart x:Name="chart1" Grid.Row="0" />
+        <c:TimerChart x:Name="chart2" Grid.Row="1" />
+        <c:TimerChart x:Name="chart3" Grid.Row="2" />
     </Grid>
 </Window>
