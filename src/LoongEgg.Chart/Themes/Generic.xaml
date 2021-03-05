@@ -76,7 +76,19 @@
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <local:GridLines StrokeThickness="0.5" />
                         <local:AxisLines Placement="Bottom" />
+                        <local:AxisLines
+                            Gap="-8"
+                            Length="8"
+                            Placement="Bottom"
+                            StrokeThickness="1.5"
+                            TickLevel="Minor" />
                         <local:AxisLines Placement="Top" />
+                        <local:AxisLines
+                            Gap="-8"
+                            Length="8"
+                            Placement="Top"
+                            StrokeThickness="1.5"
+                            TickLevel="Minor" />
                         <local:AxisLines Placement="Left" />
                         <local:AxisLines Placement="Right" />
                         <local:AxisLabels Placement="Right" />

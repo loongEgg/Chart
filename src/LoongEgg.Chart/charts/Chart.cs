@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using System;
 using System.Windows.Media;
+using System.Windows.Data;
 
 namespace LoongEgg.Chart
 {
@@ -123,6 +124,34 @@ namespace LoongEgg.Chart
             PART_FigureBorder = GetTemplateChild(nameof(PART_FigureBorder)) as Border;
             PART_FigureContainer = GetTemplateChild(nameof(PART_FigureContainer)) as Panel;
 
+
+            var parent = Helper.TemplateHelper.GetParent<TimerChart>(this);
+            if (parent != null)
+            {
+                Binding binding;
+
+                binding = new Binding(nameof(TimerChart.TimeRange)) { Source = parent };
+                SetBinding(HorizontalRangeProperty, binding);
+
+                binding = new Binding(nameof(TimerChart.HorizontalMajorTicks)) { Source = parent };
+                SetBinding(HorizontalMajorTicksProperty, binding);
+
+                binding = new Binding(nameof(TimerChart.HorizontalMinorTicks)) { Source = parent };
+                SetBinding(HorizontalMinorTicksProperty, binding);
+
+                binding = new Binding(nameof(TimerChart.ValueRange)) { Source = parent };
+                SetBinding(VerticalRangeProperty, binding);
+
+                binding = new Binding(nameof(TimerChart.VerticalMajorTicks)) { Source = parent };
+                SetBinding(VerticalMajorTicksProperty, binding);
+
+                binding = new Binding(nameof(TimerChart.VerticalMinorTicks)) { Source = parent };
+                SetBinding(VerticalMinorTicksProperty, binding);
+
+                 binding = new Binding(nameof(TimerChart.DataGroup)) { Source = parent };
+                SetBinding(DataGroupProperty, binding);
+            }
+
 #if DEBUG
             if (PART_Left == null
                 || PART_Right == null
@@ -138,7 +167,7 @@ namespace LoongEgg.Chart
         #endregion
 
         #region dependency properties and change handler
-         
+
         /// <summary>
         /// 
         /// </summary>
@@ -234,7 +263,7 @@ namespace LoongEgg.Chart
         /// </summary>
         /// <param name="self">the chart contain the element</param>
         /// <param name="element">the element to be removed</param>
-        private static void RemoveChild(Chart self,ChartElement element)
+        private static void RemoveChild(Chart self, ChartElement element)
         {
             if (element == null || self == null) return;
             (element.Parent as Panel)?.Children.Remove(element);

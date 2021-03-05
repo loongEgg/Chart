@@ -88,18 +88,26 @@ namespace LoongEgg.Chart
         /// 重新划分刻度, 用于从MajorTicks转换到MinorTicks
         /// </summary>
         /// <param name="ticksOld">老的刻度集合</param>
-        /// <param name="newCount">划分的新的分数</param>
+        /// <param name="scalar">新刻度相对于老刻度的细分倍数, 比如原来刻度步长为step = 5, scalar = 10, 则新的步长为step/scalar=0.5</param>
         /// <param name="ticksNew">计算出的新的刻度集合</param>
-        public static void TicksRespacing(double[] ticksOld, double newCount, out double[] ticksNew)
+        public static void TicksRespacing(double[] ticksOld, double scalar, out double[] ticksNew)
         {
             var min = ticksOld.Min();
             var max = ticksOld.Max();
-            double step = (max - min) / newCount;
-            ticksNew = new double[(int)newCount];
-            for (int i = 0; i < newCount; i++)
+            double step = ticksOld[1] - ticksOld[0];
+            step = step / scalar;
+            var result = new List<double>();
+            double tmp = min;
+            do
             {
-                ticksNew[i] = min + step * i;
-            }
+                tmp += step;
+                if(ticksOld.Contains(tmp) == false)
+                {
+                    result.Add(tmp);
+                }
+            } while (tmp < max);
+
+            ticksNew = result.ToArray();
         }
 
         #endregion

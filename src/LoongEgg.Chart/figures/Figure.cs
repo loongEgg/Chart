@@ -205,6 +205,11 @@ namespace LoongEgg.Chart
             if (Container != null)
             {
                 ResetNormalizeAlgorithms();
+                Container.ValueToScreenAlgorithmsChanged += (s, e) =>
+                {
+                    ResetNormalizeAlgorithms();
+                    Update();
+                };
             }
             ResetPlacement();
             ResetNormalizeAlgorithms();

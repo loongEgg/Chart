@@ -23,7 +23,7 @@ namespace LoongEgg.Chart
 
         public bool InternalChanging { get; set; } = false;
 
-        private DataGroup DataGroup = new DataGroup();
+        public DataGroup DataGroup { get; } = new DataGroup();
 
         public RangeFilter Filter { get; private set; } = new RangeFilter(new Range(30, 60), new Range(-50, 50));
 
@@ -32,14 +32,6 @@ namespace LoongEgg.Chart
         public TimerChart()
         {
 
-            SetCurrentValue(HorizontalMajorTicksProperty, new double[] { 0, 25, 50, 75, 100, 125, 150, 175, 200 });
-
-            var ticks = new List<double>();
-            for (int i = 0; i < 200; i += 5)
-                ticks.Add(i);
-            SetCurrentValue(HorizontalMinorTicksProperty, ticks);
-
-            SetCurrentValue(VerticalMajorTicksProperty, new double[] { -10, -5, 0, 5, 10 });
             SetCurrentValue(TimeRangeProperty, new Range(-30, 60));
             SetCurrentValue(ValueRangeProperty, new Range(-10, 10));
 
@@ -75,16 +67,13 @@ namespace LoongEgg.Chart
             if (PART_Chart == null)
             {
                 Debugger.Break();
-            }
-            else
-            {
-                OnAddChart(PART_Chart);
-            }
+            } 
         }
         #endregion
 
         #region dependency properties and change handler
-        [Description("")]
+
+        [Description("刻度自适应")]
         public bool AutoFixTicks
         {
             get { return (bool)GetValue(AutoFixTicksProperty); }
@@ -98,27 +87,81 @@ namespace LoongEgg.Chart
                 nameof(AutoFixTicks),
                 typeof(bool),
                 typeof(TimerChart),
-                new PropertyMetadata(true, OnRangeChanged)
+                new PropertyMetadata(true, OnAxisKeyParametersChanged)
             );
 
-        [Description("")]
-        public Range ValueRange
-        {
-            get { return (Range)GetValue(ValueRangeProperty); }
-            set { SetValue(ValueRangeProperty, value); }
-        }
+        private bool IsSettingAxisParameter = false;
+
         /// <summary>
-        /// Dependency property of <see cref="ValueRange"/>
+        /// 当坐标轴关键参数改变时
         /// </summary>
-        public static readonly DependencyProperty ValueRangeProperty = DependencyProperty.Register
-            (
-                nameof(ValueRange),
-                typeof(Range),
-                typeof(TimerChart),
-                new PropertyMetadata(null, OnRangeChanged)
-            );
+        /// <param name="d"><see cref="Chart"/></param>
+        /// <param name="e">Range, or TicksCount</param>
+        private static void OnAxisKeyParametersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = d as TimerChart;
+            if (self == null) return;
+            if (self.AutoFixTicks == false) return;
 
-        [Description("")]
+            // 水平刻度改变
+            if (e.Property == TimeRangeProperty || e.Property == HorizontalMajorTicksCountProperty || e.Property == HorizontalMinorTicksScalarProperty)
+            {
+                if (self.TimeRange == null || self.HorizontalMajorTicksCount == 0) return;
+
+                if (self.IsSettingAxisParameter == true) return;
+                self.IsSettingAxisParameter = true;
+                Range range;
+                double[] ticks;
+
+                // TODO: Ticks should be outside the range
+                AutomaticTick.RangeTicksFix(self.TimeRange, self.HorizontalMajorTicksCount, out range, out ticks);
+                self.TimeRange = range;
+                self.HorizontalMajorTicks = ticks;
+
+                if (self.HorizontalMinorTicksScalar > 1)
+                    AutomaticTick.TicksRespacing(ticks, self.HorizontalMinorTicksScalar, out ticks);
+                else
+                    ticks = new double[0];
+                self.HorizontalMinorTicks = ticks;
+
+                self.IsSettingAxisParameter = false;
+
+                if (e.Property == TimeRangeProperty)
+                {
+                    self.ResetFilterRange();
+                }
+            }
+            // 垂直刻度改变
+            if (e.Property == ValueRangeProperty || e.Property == VerticalMajorTicksCountsProperty || e.Property == VerticalMinorTicksScalarProperty)
+            {
+                if (self.ValueRange == null || self.VerticalMajorTicksCounts < 2) return;
+
+                if (self.IsSettingAxisParameter == true) return;
+                self.IsSettingAxisParameter = true;
+                Range range;
+                double[] ticks;
+
+                AutomaticTick.RangeTicksFix(self.ValueRange, self.VerticalMajorTicksCounts, out range, out ticks);
+                self.ValueRange = range;
+                self.VerticalMajorTicks = ticks;
+
+                self.IsSettingAxisParameter = false;
+
+                if (self.VerticalMinorTicksScalar > 1)
+                    AutomaticTick.TicksRespacing(ticks, self.VerticalMinorTicksScalar, out ticks);
+                else
+                    ticks = new double[0];
+                self.VerticalMinorTicks = ticks;
+
+                if (e.Property == ValueRangeProperty)
+                {
+                    self.ResetFilterRange();
+                }
+            }
+        }
+
+        /*-------------------------------- horizontal properties --------------------------------*/
+        [Description("水平刻度的时间范围(s)")]
         public Range TimeRange
         {
             get { return (Range)GetValue(TimeRangeProperty); }
@@ -132,22 +175,28 @@ namespace LoongEgg.Chart
                 nameof(TimeRange),
                 typeof(Range),
                 typeof(TimerChart),
-                new PropertyMetadata(new Range(-30, 60), OnRangeChanged)
+                new PropertyMetadata(new Range(-10, 60), OnAxisKeyParametersChanged)
             );
 
-        private static void OnRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        [Description("水平主刻度数目")]
+        public uint HorizontalMajorTicksCount
         {
-            var self = d as TimerChart;
-            if (self == null) return;
-            if (self.TimeRange != null && self.ValueRange != null)
-            {
-                self.ResetFilterRange();
-                if (self.AutoFixTicks)
-                    self.ResetAutoFixValueRangeTicks();
-            }
+            get { return (uint)GetValue(HorizontalMajorTicksCountProperty); }
+            set { SetValue(HorizontalMajorTicksCountProperty, value); }
         }
+        /// <summary>
+        /// Dependency property of <see cref="HorizontalMajorTicksCount"/>
+        /// </summary>
+        public static readonly DependencyProperty HorizontalMajorTicksCountProperty = DependencyProperty.Register
+            (
+                nameof(HorizontalMajorTicksCount),
+                typeof(uint),
+                typeof(TimerChart),
+                new PropertyMetadata((uint)18, OnAxisKeyParametersChanged, (s, e) => uint.Parse(e.ToString()) < 2 ? (uint)2 : uint.Parse(e.ToString()))
+            );
 
-        [Description("")]
+        [Description("水平主刻度")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IEnumerable<double> HorizontalMajorTicks
         {
             get { return (IEnumerable<double>)GetValue(HorizontalMajorTicksProperty); }
@@ -164,7 +213,26 @@ namespace LoongEgg.Chart
                 new PropertyMetadata(default(IEnumerable<double>))
             );
 
-        [Description("")]
+
+        [Description("次要刻度相对主要刻度的倍数, ＞1或＝0")]
+        public uint HorizontalMinorTicksScalar
+        {
+            get { return (uint)GetValue(HorizontalMinorTicksScalarProperty); }
+            set { SetValue(HorizontalMinorTicksScalarProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="HorizontalMinorTicksScalar"/>
+        /// </summary>
+        public static readonly DependencyProperty HorizontalMinorTicksScalarProperty = DependencyProperty.Register
+            (
+                nameof(HorizontalMinorTicksScalar),
+                typeof(uint),
+                typeof(TimerChart),
+                new PropertyMetadata((uint)5, OnAxisKeyParametersChanged, (s, e) => uint.Parse(e.ToString()) <= 1 ? (uint)0 : uint.Parse(e.ToString()))
+            );
+
+        [Description("水平次刻度")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IEnumerable<double> HorizontalMinorTicks
         {
             get { return (IEnumerable<double>)GetValue(HorizontalMinorTicksProperty); }
@@ -180,8 +248,65 @@ namespace LoongEgg.Chart
                 typeof(TimerChart),
                 new PropertyMetadata(default(IEnumerable<double>))
             );
+        /*-------------------------------- horizontal properties --------------------------------*/
+
+        /*--------------------------------- vertical properties ---------------------------------*/
+        [Description("垂直数据范围")]
+        public Range ValueRange
+        {
+            get { return (Range)GetValue(ValueRangeProperty); }
+            set { SetValue(ValueRangeProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="ValueRange"/>
+        /// </summary>
+        public static readonly DependencyProperty ValueRangeProperty = DependencyProperty.Register
+            (
+                nameof(ValueRange),
+                typeof(Range),
+                typeof(TimerChart),
+                new PropertyMetadata(null, OnAxisKeyParametersChanged)
+            );
+
 
         [Description("")]
+        public uint VerticalMajorTicksCounts
+        {
+            get { return (uint)GetValue(VerticalMajorTicksCountsProperty); }
+            set { SetValue(VerticalMajorTicksCountsProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="VerticalMajorTicksCounts"/>
+        /// </summary>
+        public static readonly DependencyProperty VerticalMajorTicksCountsProperty = DependencyProperty.Register
+            (
+                nameof(VerticalMajorTicksCounts),
+                typeof(uint),
+                typeof(TimerChart),
+                new PropertyMetadata((uint)5, OnAxisKeyParametersChanged, (s, e) => uint.Parse(e.ToString()) < 2 ? (uint)2 : uint.Parse(e.ToString()))
+            );
+
+
+        [Description("")]
+        public uint VerticalMinorTicksScalar
+        {
+            get { return (uint)GetValue(VerticalMinorTicksScalarProperty); }
+            set { SetValue(VerticalMinorTicksScalarProperty, value); }
+        }
+        /// <summary>
+        /// Dependency property of <see cref="VerticalMinorTicksScalar"/>
+        /// </summary>
+        public static readonly DependencyProperty VerticalMinorTicksScalarProperty = DependencyProperty.Register
+            (
+                nameof(VerticalMinorTicksScalar),
+                typeof(uint),
+                typeof(TimerChart),
+                new PropertyMetadata((uint)5, OnAxisKeyParametersChanged, (s, e) => uint.Parse(e.ToString()) <= 1 ? (uint)0 : uint.Parse(e.ToString()))
+            );
+
+
+        [Description("垂直主刻度")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IEnumerable<double> VerticalMajorTicks
         {
             get { return (IEnumerable<double>)GetValue(VerticalMajorTicksProperty); }
@@ -198,64 +323,25 @@ namespace LoongEgg.Chart
                 new PropertyMetadata(default(IEnumerable<double>))
             );
 
-        private bool IsSettingValueRangeTicks = false;
-        /// <summary>
-        /// 使用自适应算法重置刻度
-        /// </summary>
-        private void ResetAutoFixValueRangeTicks()
+
+        [Description("")]
+        public IEnumerable<double> VerticalMinorTicks
         {
-
-            #region horizontal axis not set now
-
-            List<double> ticks;
-
-            ticks = new List<double>();
-            for (double i = TimeRange.Min; i <= TimeRange.Max; i += 5)
-                ticks.Add(i);
-            HorizontalMajorTicks = ticks;
-
-            ticks = new List<double>();
-            for (double i = TimeRange.Min; i <= TimeRange.Max; i += 1)
-                ticks.Add(i);
-            HorizontalMinorTicks = ticks;
-
-            #endregion
-
-            if (IsSettingValueRangeTicks == true) return;
-            IsSettingValueRangeTicks = true;
-
-            if (PART_Chart != null && PART_Chart.PART_FigureContainer != null)
-            {
-                foreach (Figure child in PART_Chart.PART_FigureContainer.Children)
-                {
-                    if (child != null)
-                        child.InternalChange = true;
-                }
-            }
-
-            Range verticalRange;
-            double[] verticalMajorTicks;
-
-            AutomaticTick.RangeTicksFix(ValueRange, 8, out verticalRange, out verticalMajorTicks);
-            ValueRange = verticalRange;
-            VerticalMajorTicks = verticalMajorTicks;
-
-            if (PART_Chart != null && PART_Chart.PART_FigureContainer.Children != null)
-            {
-                foreach (Figure child in PART_Chart.PART_FigureContainer.Children)
-                {
-                    if (child != null)
-                    {
-                        child.ResetNormalizeAlgorithms();
-                        child.InternalChange = false;
-                        child.Update();
-                    }
-                }
-            }
-
-            IsSettingValueRangeTicks = false;
+            get { return (IEnumerable<double>)GetValue(VerticalMinorTicksProperty); }
+            set { SetValue(VerticalMinorTicksProperty, value); }
         }
+        /// <summary>
+        /// Dependency property of <see cref="VerticalMinorTicks"/>
+        /// </summary>
+        public static readonly DependencyProperty VerticalMinorTicksProperty = DependencyProperty.Register
+            (
+                nameof(VerticalMinorTicks),
+                typeof(IEnumerable<double>),
+                typeof(TimerChart),
+                new PropertyMetadata(default(IEnumerable<double>))
+            );
 
+        /*--------------------------------- vertical properties ---------------------------------*/
 
         [Description("")]
         public SignalGroup SignalGroup
@@ -291,21 +377,32 @@ namespace LoongEgg.Chart
                     var dataSeries = new DataSeries();
                     item.ValueChanged += (s, e) =>
                     {
-                        dataSeries.Add(new Data.Point(Clock.TimeStamp, item.Value));
-
-                        if (item.Value > self.ValueRange.Max)
-                        {
-                            var min = self.ValueRange.Min;
-                            self.ValueRange = new Range(min, item.Value);
-                        }
-                        else if (item.Value < self.ValueRange.Min)
-                        {
-                            var max = self.ValueRange.Max;
-                            self.ValueRange = new Range(item.Value, max);
-                        }
+                        OnSignalValueChanged(self, item, dataSeries);
                     };
                     self.DataGroup.Add(dataSeries);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 信号变化时的处理方法
+        /// </summary>
+        /// <param name="chart">信号附属的图表</param>
+        /// <param name="signal">信号</param>
+        /// <param name="dataSeries">信号附属的数据序列</param>
+        private static void OnSignalValueChanged(TimerChart chart, Signal signal, DataSeries dataSeries)
+        {
+            dataSeries.Add(new Data.Point(Clock.TimeStamp, signal.Value));
+
+            if (signal.Value > chart.ValueRange.Max)
+            {
+                var min = chart.ValueRange.Min;
+                chart.ValueRange = new Range(min, signal.Value);
+            }
+            else if (signal.Value < chart.ValueRange.Min)
+            {
+                var max = chart.ValueRange.Max;
+                chart.ValueRange = new Range(signal.Value, max);
             }
         }
 
@@ -316,25 +413,6 @@ namespace LoongEgg.Chart
         }
 
         #endregion
-
-        void OnAddChart(Chart chart)
-        {
-            Binding binding;
-            binding = new Binding(nameof(TimeRange)) { Source = this };
-            chart.SetBinding(Chart.HorizontalRangeProperty, binding);
-
-            binding = new Binding(nameof(ValueRange)) { Source = this };
-            chart.SetBinding(Chart.VerticalRangeProperty, binding);
-
-            binding = new Binding(nameof(HorizontalMajorTicks)) { Source = this };
-            chart.SetBinding(Chart.HorizontalMajorTicksProperty, binding);
-            binding = new Binding(nameof(HorizontalMinorTicks)) { Source = this };
-            chart.SetBinding(Chart.HorizontalMinorTicksProperty, binding);
-
-            binding = new Binding(nameof(VerticalMajorTicks)) { Source = this };
-            chart.SetBinding(Chart.VerticalMajorTicksProperty, binding);
-
-            chart.DataGroup = this.DataGroup;
-        }
+ 
     }
 }

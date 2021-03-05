@@ -97,6 +97,7 @@
     <Compile Include="Figures\PolylineFigure.cs" />
     <Compile Include="Contracts\ITimerChart.cs" />
     <Compile Include="Enums\Intervals.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
