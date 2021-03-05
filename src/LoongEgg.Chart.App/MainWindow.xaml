@@ -35,27 +35,7 @@
                 Content="Delete" />
         </StackPanel>
 
+        <c:TimerChartList Grid.Row="2" SignalGroups="{Binding SignalGroups}" />
 
-        <ListBox
-            Grid.Row="2"
-            HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch"
-            ItemsSource="{Binding SignalGroups}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="1" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid VerticalAlignment="Stretch">
-                        <c:TimerChart
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            SignalGroup="{Binding}" />
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
     </Grid>
 </Window>

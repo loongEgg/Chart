@@ -1,0 +1,34 @@
+﻿<UserControl
+    x:Class="LoongEgg.Chart.TimerChartList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LoongEgg.Chart"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <ListBox
+        HorizontalContentAlignment="Stretch"
+        VerticalContentAlignment="Stretch"
+        Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
+        Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
+        ItemsSource="{Binding SignalGroups, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}">
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="1" />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid VerticalAlignment="Stretch">
+                    <local:TimerChart
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        SignalGroup="{Binding}" />
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</UserControl>

@@ -81,11 +81,18 @@
     <Compile Include="Enums\TickLevels.cs" />
     <Compile Include="Charts\TimerChart.cs" />
     <Compile Include="Contracts\ISignal.cs" />
+    <Compile Include="Charts\TimerChartList.xaml.cs">
+      <DependentUpon>TimerChartList.xaml</DependentUpon>
+    </Compile>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Delegates\ValueToScreen.cs" />
+    <Page Include="Charts\TimerChartList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IChart.cs" />

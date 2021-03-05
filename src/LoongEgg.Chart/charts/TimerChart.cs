@@ -324,7 +324,8 @@ namespace LoongEgg.Chart
             );
 
 
-        [Description("")]
+        [Description("垂直次要刻度")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IEnumerable<double> VerticalMinorTicks
         {
             get { return (IEnumerable<double>)GetValue(VerticalMinorTicksProperty); }
@@ -342,8 +343,7 @@ namespace LoongEgg.Chart
             );
 
         /*--------------------------------- vertical properties ---------------------------------*/
-
-        [Description("")]
+        [Description("信号集合")]
         public SignalGroup SignalGroup
         {
             get { return (SignalGroup)GetValue(SignalGroupProperty); }
