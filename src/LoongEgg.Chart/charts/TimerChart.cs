@@ -23,7 +23,7 @@ namespace LoongEgg.Chart
 
         public bool InternalChanging { get; set; } = false;
 
-        private ObservableCollection<DataSeries> DataGroup = new ObservableCollection<DataSeries>();
+        private DataGroup DataGroup = new DataGroup();
 
         public RangeFilter Filter { get; private set; } = new RangeFilter(new Range(30, 60), new Range(-50, 50));
 

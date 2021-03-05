@@ -71,7 +71,7 @@ namespace LoongEgg.Chart
             if (PART_Center == null) return;
             var size = PART_Center.RenderSize;
             if (size.Width == 0 || size.Height == 0) return;
-            Logger.Dbug("reset", true);
+            Logger.Dbug("value to screen reset", true);
             double kx = size.Width / HorizontalRange.Distance;
             double ky = size.Height / VerticalRange.Distance;
             HorizontalValueToScreen = new ValueToScreen(v => kx * (v - HorizontalRange.Min));
@@ -246,9 +246,9 @@ namespace LoongEgg.Chart
         /// the DataSeries collection should be paint to Figures
         /// </summary>
         [Description("the DataSeries collection should be paint to Figures")]
-        public ObservableCollection<DataSeries> DataGroup
+        public DataGroup DataGroup
         {
-            get { return (ObservableCollection<DataSeries>)GetValue(DataGroupProperty); }
+            get { return (DataGroup)GetValue(DataGroupProperty); }
             set { SetValue(DataGroupProperty, value); }
         }
         /// <summary>
@@ -257,9 +257,9 @@ namespace LoongEgg.Chart
         public static readonly DependencyProperty DataGroupProperty = DependencyProperty.Register
             (
                 nameof(DataGroup),
-                typeof(ObservableCollection<DataSeries>),
+                typeof(DataGroup),
                 typeof(Chart),
-                new PropertyMetadata(default(ObservableCollection<DataSeries>), OnDataGroupChanged)
+                new PropertyMetadata(default(DataGroup), OnDataGroupChanged)
             );
 
         private static void OnDataGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -269,11 +269,11 @@ namespace LoongEgg.Chart
 
             ResetOnDataGroupChanged(
                 self,
-                e.OldValue as ObservableCollection<DataSeries>,
-                e.NewValue as ObservableCollection<DataSeries>);
+                e.OldValue as DataGroup,
+                e.NewValue as DataGroup);
         }
 
-        private static void ResetOnDataGroupChanged(Chart self, ObservableCollection<DataSeries> oldValue, ObservableCollection<DataSeries> newValue)
+        private static void ResetOnDataGroupChanged(Chart self, DataGroup oldValue, DataGroup newValue)
         {
             if (self.PART_FigureContainer == null || self.PART_FigureContainer.Children == null) return;
             self.PART_FigureContainer.Children.Clear();

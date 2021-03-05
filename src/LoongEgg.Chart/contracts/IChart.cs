@@ -80,7 +80,7 @@ namespace LoongEgg.Chart
         /// <summary>
         /// 数据组 collection of DataSeries
         /// </summary>
-        ObservableCollection<DataSeries> DataGroup { get; set; }
+        DataGroup DataGroup { get; set; }
         /// <summary>
         /// 投影算法改变时
         /// </summary>
