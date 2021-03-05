@@ -97,7 +97,7 @@
     <Compile Include="Figures\PolylineFigure.cs" />
     <Compile Include="Contracts\ITimerChart.cs" />
     <Compile Include="Enums\Intervals.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -120,8 +120,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Signal\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
