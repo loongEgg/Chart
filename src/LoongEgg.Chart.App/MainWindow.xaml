@@ -11,12 +11,20 @@
     Height="700"
     mc:Ignorable="d">
     <Grid d:DataContext="{x:Static local:MainViewModel.DesignInstance}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="150" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <c:SignalList SignalGroup="{Binding SignalGroup_1}" />
+            <c:SignalList SignalGroup="{Binding SignalGroup_2}" />
+            <c:SignalList SignalGroup="{Binding SignalGroup_3}" />
+        </StackPanel>
         <c:TimerChart
             x:Name="chart1"
             Grid.Row="0"

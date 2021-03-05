@@ -84,6 +84,13 @@
     <Compile Include="Charts\TimerChartList.xaml.cs">
       <DependentUpon>TimerChartList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SignalList.xaml.cs">
+      <DependentUpon>SignalList.xaml</DependentUpon>
+    </Compile>
+    <Page Include="SignalList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,6 +134,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SignalList\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
