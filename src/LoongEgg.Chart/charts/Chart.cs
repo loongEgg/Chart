@@ -37,7 +37,7 @@ namespace LoongEgg.Chart
 
         #region events
 
-        public event EventHandler ValueToScreenAlorithmsChanged;
+        public event EventHandler ValueToScreenAlgorithmsChanged;
 
         #endregion
 
@@ -60,31 +60,11 @@ namespace LoongEgg.Chart
 
         #region value to screen algorithms
 
-        public ValueToScreen HorizontalValueToScreen
-        {
-            get { return _HorizontalValueToScreen; }
-            private set
-            {
-                _HorizontalValueToScreen = value;
-                if (value != null)
-                    ValueToScreenAlorithmsChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-        private ValueToScreen _HorizontalValueToScreen;
+        public ValueToScreen HorizontalValueToScreen { get; set; }
 
-        public ValueToScreen VerticalValueToScreen
-        {
-            get { return _VerticalValueToScreen; }
-            private set
-            {
-                _VerticalValueToScreen = value;
-                if (value != null)
-                    ValueToScreenAlorithmsChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-        private ValueToScreen _VerticalValueToScreen;
+        public ValueToScreen VerticalValueToScreen { get; set; }
 
-        public void ResetValueToScreenAlorithms()
+        public void ResetValueToScreenAlgorithms()
         {
             if (HorizontalRange == null || VerticalRange == null) return;
             if (HorizontalRange.Distance <= 0 || VerticalRange.Distance <= 0) return;
@@ -96,6 +76,7 @@ namespace LoongEgg.Chart
             double ky = size.Height / VerticalRange.Distance;
             HorizontalValueToScreen = new ValueToScreen(v => kx * (v - HorizontalRange.Min));
             VerticalValueToScreen = new ValueToScreen(v => ky * (VerticalRange.Max - v));
+            ValueToScreenAlgorithmsChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -118,7 +99,7 @@ namespace LoongEgg.Chart
             {
                 ResetOnChildrenChanged(this, Children, Children);
                 ResetOnDataGroupChanged(this, DataGroup, DataGroup);
-                PART_Center.SizeChanged += (ss, ee) => ResetValueToScreenAlorithms();
+                PART_Center.SizeChanged += (ss, ee) => ResetValueToScreenAlgorithms();
             };
         }
 
@@ -460,7 +441,7 @@ namespace LoongEgg.Chart
 
 
         private static void OnRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => (d as IChart)?.ResetValueToScreenAlorithms();
+            => (d as IChart)?.ResetValueToScreenAlgorithms();
 
         #endregion
 
