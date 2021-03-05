@@ -21,9 +21,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="2" Grid.Column="1">
-            <c:SignalList SignalGroup="{Binding SignalGroup_1}" />
+            <c:SignalGroupList SignalGroups="{Binding SignalGroups}" />
+            <!--<c:SignalList SignalGroup="{Binding SignalGroup_1}" />
             <c:SignalList SignalGroup="{Binding SignalGroup_2}" />
-            <c:SignalList SignalGroup="{Binding SignalGroup_3}" />
+            <c:SignalList SignalGroup="{Binding SignalGroup_3}" />-->
         </StackPanel>
         <c:TimerChart
             x:Name="chart1"
