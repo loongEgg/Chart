@@ -283,7 +283,7 @@ namespace LoongEgg.Chart
                 nameof(VerticalMajorTicksCounts),
                 typeof(uint),
                 typeof(TimerChart),
-                new PropertyMetadata((uint)5, OnAxisKeyParametersChanged, (s, e) => uint.Parse(e.ToString()) < 2 ? (uint)2 : uint.Parse(e.ToString()))
+                new PropertyMetadata((uint)8, OnAxisKeyParametersChanged, (s, e) => uint.Parse(e.ToString()) < 2 ? (uint)2 : uint.Parse(e.ToString()))
             );
 
 
