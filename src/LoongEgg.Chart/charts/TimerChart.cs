@@ -258,9 +258,9 @@ namespace LoongEgg.Chart
 
 
         [Description("")]
-        public ObservableCollection<Signal> SignalGroup
+        public SignalGroup SignalGroup
         {
-            get { return (ObservableCollection<Signal>)GetValue(SignalGroupProperty); }
+            get { return (SignalGroup)GetValue(SignalGroupProperty); }
             set { SetValue(SignalGroupProperty, value); }
         }
         /// <summary>
@@ -269,17 +269,17 @@ namespace LoongEgg.Chart
         public static readonly DependencyProperty SignalGroupProperty = DependencyProperty.Register
             (
                 nameof(SignalGroup),
-                typeof(ObservableCollection<Signal>),
+                typeof(SignalGroup),
                 typeof(TimerChart),
                 new PropertyMetadata(
-                    default(ObservableCollection<Signal>),
+                    default(SignalGroup),
                     OnSignalGroupChanged)
             );
 
         private static void OnSignalGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => ResetDataGroup(d as TimerChart, e.OldValue as ObservableCollection<Signal>, e.NewValue as ObservableCollection<Signal>);
+            => ResetDataGroup(d as TimerChart, e.OldValue as SignalGroup, e.NewValue as SignalGroup);
 
-        private static void ResetDataGroup(TimerChart self, ObservableCollection<Signal> oldValue, ObservableCollection<Signal> newValue)
+        private static void ResetDataGroup(TimerChart self, SignalGroup oldValue, SignalGroup newValue)
         {
             if (self == null) return;
             self.DataGroup.Clear();

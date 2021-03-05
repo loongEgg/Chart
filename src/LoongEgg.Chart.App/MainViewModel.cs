@@ -12,11 +12,11 @@ namespace LoongEgg.Chart.App
         {
             var vm = new MainViewModel();
 
-            vm.SignalGroup_1 = new ObservableCollection<Signal>() { Signal.CosSignal, Signal.SinSignal };
-            vm.SignalGroup_2 = new ObservableCollection<Signal>() { Signal.CosSignal, Signal.SquareSignal };
-            vm.SignalGroup_3 = new ObservableCollection<Signal>() { Signal.SquareSignal, Signal.TriangleSignal };
+            vm.SignalGroup_1 = new SignalGroup() { Signal.CosSignal, Signal.SinSignal };
+            vm.SignalGroup_2 = new SignalGroup() { Signal.CosSignal, Signal.SquareSignal };
+            vm.SignalGroup_3 = new SignalGroup() { Signal.SquareSignal, Signal.TriangleSignal };
 
-            vm.SignalGroups = new ObservableCollection<ObservableCollection<Signal>>
+            vm.SignalGroups = new ObservableCollection<SignalGroup>
             {
                 vm.SignalGroup_1,
                 vm.SignalGroup_2,
@@ -26,10 +26,10 @@ namespace LoongEgg.Chart.App
             return vm;
         }
 
-        public ObservableCollection<Signal> SignalGroup_1 { get; set; }
-        public ObservableCollection<Signal> SignalGroup_2 { get; set; }
-        public ObservableCollection<Signal> SignalGroup_3 { get; set; }
+        public SignalGroup SignalGroup_1 { get; set; }
+        public SignalGroup SignalGroup_2 { get; set; }
+        public SignalGroup SignalGroup_3 { get; set; }
 
-        public ObservableCollection<ObservableCollection<Signal>> SignalGroups { get; set; }
+        public ObservableCollection<SignalGroup> SignalGroups { get; set; }
     }
 }
