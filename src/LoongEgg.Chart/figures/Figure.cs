@@ -72,14 +72,6 @@ namespace LoongEgg.Chart
         
         public void OnInitializing()
         {
-            var temp = new DataSeries();
-            var random = new Random();
-
-            for (int i = 0; i < 200; i += 10)
-            {
-                temp.Add(new Data.Point(i, random.Next(-30, 30)));
-            }
-            SetCurrentValue(DataSeriesProperty, temp);
         }
 
         #endregion
