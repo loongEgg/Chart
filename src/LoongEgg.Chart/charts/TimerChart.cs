@@ -14,11 +14,12 @@ using LoongEgg.Filter;
 namespace LoongEgg.Chart
 {
     [TemplatePart(Name = nameof(PART_Chart), Type = typeof(Chart))]
+    [TemplatePart(Name = nameof(PART_Legend), Type = typeof(TimerChartLegend))]
     [ContentProperty(nameof(SignalGroup))]
     public class TimerChart : Control, ITimerChart
     {
         private static Clock Clock = Clock.Singleton;
-
+        public TimerChartLegend PART_Legend { get; private set; }
         public Chart PART_Chart { get; internal set; }
 
         public bool InternalChanging { get; set; } = false;
@@ -57,9 +58,16 @@ namespace LoongEgg.Chart
         {
             base.OnApplyTemplate();
             PART_Chart = GetTemplateChild(nameof(PART_Chart)) as Chart;
-            if (PART_Chart == null)
+            PART_Legend = GetTemplateChild(nameof(PART_Legend)) as TimerChartLegend;
+
+            if (PART_Chart == null || PART_Legend == null)
             {
                 Debugger.Break();
+            }
+            else
+            {
+                Binding binding = new Binding(nameof(SignalGroup)) { Source = this };
+                PART_Legend.SetBinding(TimerChartLegend.SignalGroupProperty, binding);
             }
         }
         #endregion

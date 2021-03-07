@@ -12,39 +12,16 @@
     mc:Ignorable="d">
     <Grid d:DataContext="{x:Static local:MainViewModel.DesignInstance}">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="8" />
             <ColumnDefinition />
-            <ColumnDefinition Width="150" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
-            <RowDefinition Height="30" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <c:SignalGroupList SignalGroups="{Binding SignalGroups}" />
-            <!--<c:SignalList SignalGroup="{Binding SignalGroup_1}" />
-            <c:SignalList SignalGroup="{Binding SignalGroup_2}" />
-            <c:SignalList SignalGroup="{Binding SignalGroup_3}" />-->
-        </StackPanel>
-        <c:TimerChart
-            x:Name="chart1"
-            Grid.Row="0"
-            SignalGroup="{Binding SignalGroup_1}" />
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button
-                Width="120"
-                Height="30"
-                Click="Button_Click"
-                Content="Add" />
-            <Button
-                Width="120"
-                Height="30"
-                Click="Button_Click"
-                Content="Delete" />
-        </StackPanel>
-
-        <c:TimerChartList Grid.Row="2" SignalGroups="{Binding SignalGroups}" />
-
+        <c:SignalGroupList  SignalGroups="{Binding SignalGroups}" />
+        <GridSplitter
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Stretch" />
+        <c:TimerChartList SelectedGroup="{Binding SelectedGroup, Mode=OneWayToSource}" Grid.Column="2" SignalGroups="{Binding MonitoredGroups}" />
     </Grid>
 </Window>

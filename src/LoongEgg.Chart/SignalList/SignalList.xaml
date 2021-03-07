@@ -13,18 +13,28 @@
         <TextBlock MouseLeftButtonUp="TextBlock_MouseLeftButtonUp" Text="{Binding SignalGroup.Label, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
         <ListBox
             x:Name="list"
+            HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            BorderBrush="Transparent"
             Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-            ItemsSource="{Binding SignalGroup.Signals, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+            ItemsSource="{Binding SignalGroup.Signals, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            SelectedValue="{Binding SelectedSignal, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel />
+                    <StackPanel HorizontalAlignment="Stretch" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Label}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="60" Text="{Binding Label}" />
+                        <TextBox Width="80" Text="{Binding Value, StringFormat={}{0:0.######}}" />
+                        <TextBlock
+                            Width="30"
+                            Margin="2,0,2,0"
+                            Text="{Binding Unit}" />
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

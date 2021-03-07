@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +40,7 @@ namespace LoongEgg.Chart
                 list.Visibility = Visibility.Collapsed;
             }
         }
-         
+
         [Description("")]
         public SignalGroup SignalGroup
         {
@@ -55,6 +57,26 @@ namespace LoongEgg.Chart
                 typeof(SignalList),
                 new PropertyMetadata(default(SignalGroup))
             );
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Description("")]
+        public Signal SelectedSignal
+        {
+            get { return (Signal)GetValue(SelectedSignalProperty); }
+            set { SetValue(SelectedSignalProperty, value); }
+        }
+        /// <summary>
+        /// dependency property of <see ref="SelectedSignal"/>
+        /// </summary>
+        public static readonly DependencyProperty SelectedSignalProperty =
+            DependencyProperty.Register(
+                nameof(SelectedSignal),
+                typeof(Signal),
+                typeof(SignalList),
+                new PropertyMetadata(default(Signal)));
 
     }
 }

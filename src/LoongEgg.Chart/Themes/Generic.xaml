@@ -68,33 +68,37 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:TimerChart}">
-
-                    <local:Chart
-                        x:Name="PART_Chart"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <local:GridLines StrokeThickness="0.5" />
-                        <local:AxisLines Placement="Bottom" />
-                        <local:AxisLines
-                            Gap="-8"
-                            Length="8"
-                            Placement="Bottom"
-                            StrokeThickness="1.5"
-                            TickLevel="Minor" />
-                        <local:AxisLines Placement="Top" />
-                        <local:AxisLines
-                            Gap="-8"
-                            Length="8"
-                            Placement="Top"
-                            StrokeThickness="1.5"
-                            TickLevel="Minor" />
-                        <local:AxisLines Placement="Left" />
-                        <local:AxisLines Placement="Right" />
-                        <local:AxisLabels Placement="Right" />
-                        <local:AxisLabels Placement="Bottom" />
-                    </local:Chart>
-
+                    <Grid>
+                        <local:Chart
+                            x:Name="PART_Chart"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <local:GridLines StrokeThickness="0.5" />
+                            <local:AxisLines Placement="Bottom" />
+                            <local:AxisLines
+                                Gap="-8"
+                                Length="8"
+                                Placement="Bottom"
+                                StrokeThickness="1.5"
+                                TickLevel="Minor" />
+                            <local:AxisLines Placement="Top" />
+                            <local:AxisLines
+                                Gap="-8"
+                                Length="8"
+                                Placement="Top"
+                                StrokeThickness="1.5"
+                                TickLevel="Minor" />
+                            <local:AxisLines Placement="Left" />
+                            <local:AxisLines Placement="Right" />
+                            <local:AxisLabels Placement="Right" />
+                            <local:AxisLabels Placement="Bottom" />
+                        </local:Chart>
+                        <local:TimerChartLegend
+                            x:Name="PART_Legend"
+                            Margin="20,2,0,0"
+                            VerticalAlignment="Top" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

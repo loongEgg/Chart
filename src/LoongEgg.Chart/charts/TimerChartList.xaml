@@ -9,26 +9,49 @@
     d:DesignWidth="300"
     Background="Transparent"
     mc:Ignorable="d">
-    <ListBox
-        HorizontalContentAlignment="Stretch"
-        VerticalContentAlignment="Stretch"
-        Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
-        Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
-        ItemsSource="{Binding SignalGroups, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}">
-        <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-                <UniformGrid Columns="1" />
-            </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <Grid VerticalAlignment="Stretch">
-                    <local:TimerChart
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        SignalGroup="{Binding}" />
-                </Grid>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ListBox
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
+            Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
+            ItemsSource="{Binding SignalGroups, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TimerChartList}}"
+            SelectedValue="{Binding SelectedGroup, Mode=OneWayToSource, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid VerticalAlignment="Stretch">
+                        <local:TimerChart
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            SignalGroup="{Binding}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            ButtonBase.Click="Button_Click"
+            Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Width" Value="36" />
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="-" />
+            <Button Content="+" />
+        </StackPanel>
+    </Grid>
+
 </UserControl>
