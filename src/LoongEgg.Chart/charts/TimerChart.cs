@@ -381,7 +381,7 @@ namespace LoongEgg.Chart
 
             if (newValue != null)
             {
-                foreach (var item in newValue)
+                foreach (var item in newValue.Signals)
                 {
                     var dataSeries = new DataSeries();
                     item.ValueChanged += (s, e) =>

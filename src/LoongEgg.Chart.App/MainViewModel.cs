@@ -12,9 +12,17 @@ namespace LoongEgg.Chart.App
         {
             var vm = new MainViewModel();
 
-            vm.SignalGroup_1 = new SignalGroup() { Signal.CosSignal, Signal.SinSignal };
-            vm.SignalGroup_2 = new SignalGroup() { Signal.CosSignal, Signal.SquareSignal };
-            vm.SignalGroup_3 = new SignalGroup() { Signal.SquareSignal, Signal.TriangleSignal };
+            vm.SignalGroup_1 = new SignalGroup() { Label = "Signal 1"};
+            vm.SignalGroup_1.Signals.Add(Signal.CosSignal);
+            vm.SignalGroup_1.Signals.Add(Signal.SinSignal);
+
+            vm.SignalGroup_2 = new SignalGroup() { Label = "Signal 2" };
+            vm.SignalGroup_2.Signals.Add(Signal.CosSignal);
+            vm.SignalGroup_2.Signals.Add(Signal.SquareSignal);
+
+            vm.SignalGroup_3 = new SignalGroup() { Label = "Signal 3" };
+            vm.SignalGroup_3.Signals.Add(Signal.SquareSignal);
+            vm.SignalGroup_3.Signals.Add(Signal.TriangleSignal);
 
             vm.SignalGroups = new ObservableCollection<SignalGroup>
             {

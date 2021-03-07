@@ -10,13 +10,13 @@
     Foreground="Green"
     mc:Ignorable="d">
     <StackPanel>
-        <TextBlock MouseLeftButtonUp="TextBlock_MouseLeftButtonUp" Text="Header" />
+        <TextBlock MouseLeftButtonUp="TextBlock_MouseLeftButtonUp" Text="{Binding SignalGroup.Label, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
         <ListBox
             x:Name="list"
             HorizontalContentAlignment="Stretch"
             Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
             Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-            ItemsSource="{Binding SignalGroup, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+            ItemsSource="{Binding SignalGroup.Signals, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />

@@ -29,11 +29,6 @@
             纵坐标范围
             </summary>
         </member>
-        <member name="P:LoongEgg.Data.DataSeries.GroupId">
-            <summary>
-            分组编号
-            </summary>
-        </member>
         <member name="M:LoongEgg.Data.DataSeries.Reset(System.Collections.Generic.IEnumerable{LoongEgg.Data.Point})">
             <summary>
             重置为指定的集合
@@ -85,6 +80,41 @@
         <member name="T:LoongEgg.Data.Signal">
             <summary>
             信号源
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.Signal.Value">
+            <summary>
+            当前数值, 只要被设置就会引发<see cref="E:LoongEgg.Data.Signal.ValueChanged"/>
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.Signal.Label">
+            <summary>
+            信号用于在UI展示的标签
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.Signal.Unit">
+            <summary>
+            单位
+            </summary>
+        </member>
+        <member name="E:LoongEgg.Data.Signal.ValueChanged">
+            <summary>
+            信号值改变事件
+            </summary>
+        </member>
+        <member name="T:LoongEgg.Data.SignalGroup">
+            <summary>
+            <see cref="T:System.Collections.ObjectModel.ObservableCollection`1"/> of <see cref="T:LoongEgg.Data.Signal"/>
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.SignalGroup.Label">
+            <summary>
+            用于在UI显示的标签
+            </summary>
+        </member>
+        <member name="P:LoongEgg.Data.SignalGroup.Signals">
+            <summary>
+            当前组所含的信号
             </summary>
         </member>
     </members>

@@ -84,12 +84,19 @@
     <Compile Include="Charts\TimerChartList.xaml.cs">
       <DependentUpon>TimerChartList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Scope\Scope.xaml.cs">
+      <DependentUpon>Scope.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SignalList\SignalGroupList.xaml.cs">
       <DependentUpon>SignalGroupList.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignalList\SignalList.xaml.cs">
       <DependentUpon>SignalList.xaml</DependentUpon>
     </Compile>
+    <Page Include="Scope\Scope.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SignalList\SignalGroupList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
