@@ -295,7 +295,7 @@ namespace LoongEgg.Chart
         {
             var self = d as Chart;
             if (self == null) return;
-
+             
             ResetOnDataGroupChanged(
                 self,
                 e.OldValue as DataGroup,
@@ -305,6 +305,8 @@ namespace LoongEgg.Chart
         private static void ResetOnDataGroupChanged(Chart self, DataGroup oldValue, DataGroup newValue)
         {
             if (self.PART_FigureContainer == null || self.PART_FigureContainer.Children == null) return;
+            if (oldValue == newValue) return;
+
             self.PART_FigureContainer.Children.Clear();
 
             if (oldValue != null)

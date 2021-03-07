@@ -26,6 +26,8 @@ namespace LoongEgg.Chart
 
         public DataGroup DataGroup { get; } = new DataGroup();
 
+        public List<Signal> Signals { get; } = new List<Signal>();
+
         public RangeFilter Filter { get; private set; } = new RangeFilter(new Range(30, 60), new Range(-50, 50));
 
         #region ctor and intializing
@@ -385,23 +387,29 @@ namespace LoongEgg.Chart
         private static void ResetDataGroup(TimerChart self, SignalGroup oldValue, SignalGroup newValue)
         {
             if (self == null) return;
+            if (oldValue == newValue) return;
             self.DataGroup.Clear();
 
             if (oldValue != null)
             {
                 oldValue.Signals.CollectionChanged -= self.Signals_CollectionChanged;
+                self.Signals.Clear();
             }
 
             if (newValue != null)
             {
                 foreach (var item in newValue.Signals)
                 {
-                    var dataSeries = new DataSeries();
-                    item.ValueChanged += (s, e) =>
+                    if (self.Signals.Contains(item) == false)
                     {
-                        OnSignalValueChanged(self, item, dataSeries);
-                    };
-                    self.DataGroup.Add(dataSeries);
+                        var dataSeries = new DataSeries();
+                        item.ValueChanged += (s, e) =>
+                        {
+                            OnSignalValueChanged(self, item, dataSeries);
+                        };
+                        self.DataGroup.Add(dataSeries);
+                        self.Signals.Add(item);
+                    }
                 }
                 newValue.Signals.CollectionChanged += self.Signals_CollectionChanged;
             }
@@ -416,18 +424,23 @@ namespace LoongEgg.Chart
                 for (int i = 0; i < length; i++)
                 {
                     DataGroup.RemoveAt(startIndex);
+                    Signals.RemoveAt(startIndex);
                 }
             }
             if (e.NewItems != null)
             {
                 foreach (Signal item in e.NewItems)
                 {
-                    var dataSeries = new DataSeries();
-                    item.ValueChanged += (ss, ee) =>
+                    if (Signals.Contains(item) == false)
                     {
-                        OnSignalValueChanged(this, item, dataSeries);
-                    };
-                    DataGroup.Add(dataSeries);
+                        var dataSeries = new DataSeries();
+                        item.ValueChanged += (ss, ee) =>
+                        {
+                            OnSignalValueChanged(this, item, dataSeries);
+                        };
+                        DataGroup.Add(dataSeries);
+                        Signals.Add(item);
+                    }
                 }
             }
 
