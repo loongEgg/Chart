@@ -11,7 +11,7 @@ namespace LoongEgg.Chart.App
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Logger.Enable(Loggers.Console);
+            //Logger.Enable(Loggers.Console);
             this.MainWindow = new MainWindow() { DataContext = MainViewModel.DesignInstance };
             this.MainWindow.Show();
         }

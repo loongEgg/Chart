@@ -387,6 +387,11 @@ namespace LoongEgg.Chart
             if (self == null) return;
             self.DataGroup.Clear();
 
+            if (oldValue != null)
+            {
+                oldValue.Signals.CollectionChanged -= self.Signals_CollectionChanged;
+            }
+
             if (newValue != null)
             {
                 foreach (var item in newValue.Signals)
@@ -398,7 +403,34 @@ namespace LoongEgg.Chart
                     };
                     self.DataGroup.Add(dataSeries);
                 }
+                newValue.Signals.CollectionChanged += self.Signals_CollectionChanged;
             }
+        }
+
+        private void Signals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                var startIndex = e.OldStartingIndex;
+                var length = e.OldItems.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    DataGroup.RemoveAt(startIndex);
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (Signal item in e.NewItems)
+                {
+                    var dataSeries = new DataSeries();
+                    item.ValueChanged += (ss, ee) =>
+                    {
+                        OnSignalValueChanged(this, item, dataSeries);
+                    };
+                    DataGroup.Add(dataSeries);
+                }
+            }
+
         }
 
         /// <summary>

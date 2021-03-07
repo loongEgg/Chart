@@ -32,8 +32,8 @@ namespace LoongEgg.Chart.App
             };
 
             vm.MonitoredGroups.Add(vm.SignalGroup_1);
-            vm.MonitoredGroups.Add(vm.SignalGroup_2);
-            vm.MonitoredGroups.Add(vm.SignalGroup_3);
+            //vm.MonitoredGroups.Add(vm.SignalGroup_2);
+            //vm.MonitoredGroups.Add(vm.SignalGroup_3);
 
             return vm;
         }

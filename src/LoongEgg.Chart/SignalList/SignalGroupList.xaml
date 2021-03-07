@@ -13,7 +13,7 @@
     <ListBox Background="Transparent" ItemsSource="{Binding SignalGroups}">
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <local:SignalList SignalGroup="{Binding}" />
+                <local:SignalList PreviewMouseRightButtonDown="SignalList_PreviewMouseRightButtonDown" SignalGroup="{Binding}" />
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>

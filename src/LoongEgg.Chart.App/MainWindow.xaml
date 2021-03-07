@@ -17,11 +17,14 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <c:SignalGroupList  SignalGroups="{Binding SignalGroups}" />
+        <c:SignalGroupList TargetGroup="{Binding SelectedGroup, Mode=OneWay}" SignalGroups="{Binding SignalGroups}" />
         <GridSplitter
             Grid.Column="1"
             Width="5"
             HorizontalAlignment="Stretch" />
-        <c:TimerChartList SelectedGroup="{Binding SelectedGroup, Mode=OneWayToSource}" Grid.Column="2" SignalGroups="{Binding MonitoredGroups}" />
+        <c:TimerChartList
+            Grid.Column="2"
+            SelectedGroup="{Binding SelectedGroup, Mode=OneWayToSource}"
+            SignalGroups="{Binding MonitoredGroups}" />
     </Grid>
 </Window>

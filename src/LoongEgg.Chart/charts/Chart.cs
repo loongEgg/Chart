@@ -148,7 +148,7 @@ namespace LoongEgg.Chart
                 binding = new Binding(nameof(TimerChart.VerticalMinorTicks)) { Source = parent };
                 SetBinding(VerticalMinorTicksProperty, binding);
 
-                 binding = new Binding(nameof(TimerChart.DataGroup)) { Source = parent };
+                binding = new Binding(nameof(TimerChart.DataGroup)) { Source = parent };
                 SetBinding(DataGroupProperty, binding);
             }
 
@@ -327,6 +327,7 @@ namespace LoongEgg.Chart
                     var figure = new PolylineFigure() { DataSeries = item, Stroke = stroke };
                     figure.Container = self;
                 }
+                newValue.CollectionChanged += self.DataGroup_CollectionChanged;
             }
         }
 
@@ -346,11 +347,25 @@ namespace LoongEgg.Chart
             {
                 foreach (var item in e.NewItems)
                 {
-                    if (item is Figure)
-                        PART_FigureContainer?.Children.Add(item as Figure);
+                    var series = item as DataSeries;
+                    if (series != null)
+                    {
+                        int id = PART_FigureContainer.Children.Count;
+                        var stroke = Foreground; /* assign to foreground the stroke */
+
+                        /* if has default brushes use it as the item add */
+                        if (id < Chart.DefaultBrushes.Count)
+                        {
+                            stroke = Chart.DefaultBrushes[id];
+                        }
+
+                        var figure = new PolylineFigure() { DataSeries = series, Stroke = stroke };
+                        figure.Container = this;
+                    }
                 }
             }
         }
+
 
 
         /// <summary>
