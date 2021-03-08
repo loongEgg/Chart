@@ -45,7 +45,6 @@ namespace LoongEgg.Chart
                 ResetTimeAxis();
                 ResetValueAxis();
                 ResetFilterRange();
-                ResetDataGroup(this, null, SignalGroup);
             };
         }
 
@@ -407,6 +406,8 @@ namespace LoongEgg.Chart
             }
         }
 
+        // TODO: Add signal to DataSeries as a property
+        // TODO: Fix the bug that axis range still changed even if the figure has been removed
         private void Signals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
@@ -417,6 +418,7 @@ namespace LoongEgg.Chart
                 {
                     DataGroup.RemoveAt(startIndex);
                 }
+
             }
             if (e.NewItems != null)
             {

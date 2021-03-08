@@ -64,9 +64,15 @@ namespace LoongEgg.Chart
                 if (list != null)
                 {
                     var selectedSignal = list.SelectedSignal;
-                    if (selectedSignal != null && TargetGroup.Signals.Contains(selectedSignal) == false)
+
+                    if (selectedSignal == null) return;
+                    if (TargetGroup.Signals.Contains(selectedSignal) == false)
                     {
                         TargetGroup.Signals.Add(selectedSignal);
+                    }
+                    else
+                    {
+                        TargetGroup.Signals.Remove(selectedSignal); 
                     }
                 }
 

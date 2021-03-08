@@ -40,7 +40,8 @@
     <Reference Include="LoongEgg.Core">
       <HintPath>..\..\lib\LoongEgg.Core.dll</HintPath>
     </Reference>
-    <Reference Include="LoongEgg.Data">
+    <Reference Include="LoongEgg.Data, Version=0.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\LoongEgg.Data.dll</HintPath>
     </Reference>
     <Reference Include="LoongEgg.Log">

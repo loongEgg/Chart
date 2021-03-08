@@ -38,8 +38,9 @@
     <Reference Include="LoongEgg.Core">
       <HintPath>E:\project\LoongEgg.Core\LoongEgg.Core\bin\Debug\net45\LoongEgg.Core.dll</HintPath>
     </Reference>
-    <Reference Include="LoongEgg.Data">
-      <HintPath>E:\project\LoongEgg.Data\LoongEgg.Data\bin\Debug\net45\LoongEgg.Data.dll</HintPath>
+    <Reference Include="LoongEgg.Data, Version=0.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\LoongEgg.Data.dll</HintPath>
     </Reference>
     <Reference Include="LoongEgg.Filter">
       <HintPath>..\..\lib\LoongEgg.Filter.dll</HintPath>
